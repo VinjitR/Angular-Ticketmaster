@@ -1,0 +1,16 @@
+
+.form{
+    margin-top: 20px;
+    padding-top: 20px;
+}
+select.form-control {
+    -moz-appearance: none;
+     -webkit-appearance: none;
+     appearance: none;
+  }
+
+.form-heading{
+    padding-top: 30px;
+    align-items: center;
+    text-align: center;
+}
