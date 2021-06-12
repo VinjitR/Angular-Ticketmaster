@@ -1,3 +1,5 @@
-.alert{
-    color:red;
-}
+select.form-control {
+    -moz-appearance: none;
+     -webkit-appearance: none;
+     appearance: none;
+  }

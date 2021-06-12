@@ -509,5 +509,6 @@
 <router-outlet></router-outlet> 
 -->
 <div class="container">
-  <app-ticketform></app-ticketform>
+  <app-ticketform (detailsData)="data" ></app-ticketform>
+  <app-details [data] = "data" ></app-details>
 </div>
