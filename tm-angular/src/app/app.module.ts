@@ -1,29 +1,25 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {FormsModule} from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from "@angular/common/http";
-
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { TicketformComponent } from './ticketform/ticketform.component';
-import { DetailsComponent } from './details/details.component';
+import { DetailsCComponent } from './details-c/details-c.component';
+import { EvedetailsComponent } from './evedetails/evedetails.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    
-    TicketformComponent,
-         DetailsComponent
+    DetailsCComponent,
+    EvedetailsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule,
-    ReactiveFormsModule
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

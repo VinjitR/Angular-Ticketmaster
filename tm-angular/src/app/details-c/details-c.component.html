@@ -1,0 +1,45 @@
+<!-- <p>{{eventD.page.totalElements}}</p> -->
+
+<table class="table">
+    <thead class="thead-light ">
+      <tr class="border border-dark-1">
+        <th scope="col">#</th>
+        <th scope="col">Date</th>
+        <th scope="col">Event</th>
+        <th scope="col">Category</th>
+        <th scope="col">Venue Info</th>
+        <th scope="col">Favourites</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let event of eventD._embedded.events;let i=index">
+            <th>{{i+1}}</th>
+            <td>{{event.dates.start.localDate}}</td>
+            <td><a class="link" (click)="displayevent(event.id);detaildisplay=true">{{event.name.substring(0,35)}}</a></td>
+            <td>
+                <div class="row" *ngFor="let cat of event.classifications">
+                     <div *ngIf="(cat.genre.name!=='Undefined') && (cat.genre!==undefined) ">{{cat.genre.name}} | </div>
+                    <div *ngIf="(cat.segment.name!=='Undefined') && (cat.segment!==undefined)">{{cat.segment.name}} | </div>
+                    <div *ngIf="(cat.subGenre.name!=='Undefined') && (cat.subGenre!==undefined)"> {{cat.subGenre.name}} </div>
+                    <div *ngIf="(cat.subType!==undefined)&&(cat.subType.name!=='Undefined')"> | {{cat.subType.name}}</div>
+                    <div *ngIf="(cat.type!==undefined) && (cat.type.name!=='Undefined')"> | {{cat.type.name}}</div>
+                    <!--Deal with this later-->
+                </div>
+                <!-- <span *ngFor="let cat in event.classifications">
+                    <span *ngFor="let cater in cat">
+                        {{cater.name}}
+                    </span>
+                    </span> -->
+
+            </td>
+            <td>
+                {{event._embedded.venues[0].name}}
+            </td>
+            <td>
+                <button class="btn btn-sm default" name={{event.id}}>Favourite</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<evedetails *ngIF="evedetailsdisplay"></evedetails>
+
