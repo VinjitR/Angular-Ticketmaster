@@ -95,7 +95,10 @@ app.get('/getticket', function(req, res) {
             return res.send(res_text);
         });
 
-		});
+		})
+    .catch((err)=>{
+      res.send("Error to send data");
+    });
   }
   });
 
