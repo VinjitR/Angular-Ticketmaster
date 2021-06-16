@@ -3,7 +3,7 @@
         <button class="btn btn-sm">tw</button>
         <button class="btn btn-sm">fav</button>
     </div>
-    <div class="row justify-content-center" [hidden]="detailsInfo.name==undefined">
+    <div class="row justify-content-center" *ngIf="detailsInfo!=undefined&&detailsInfo.name!=undefined">
       <h3>{{detailsInfo.name}}</h3>
     </div>
     <ul class="nav nav-tabs justify-content-end">
@@ -21,7 +21,7 @@
 <div class="container" *ngIf="infoselect" id="eventinfo">
     <table [hidden]="!detailsready" class="table table-striped">
       <tbody>
-        <tr [hidden]="!(detailsInfo._embedded!=undefined && detailsInfo!=undefined )">
+        <tr *ngIf="!(detailsInfo!=undefined && detailsInfo._embedded!=undefined  )">
             <th scope="row">Artist / Team(s)
             </th>
             <td [hidden]="detailsInfo._embedded.attractions==undefined &&detailsInfo._embedded.attractions.length==0">
@@ -73,7 +73,7 @@
 </div>
 <div class="container" [hidden]="!artistselect" id="a&t">
   <table class="table">
-    <tbody>
+    <tbody *ngIf="spotifyInfo!=undefined">
       <tr>
         <th>Name</th>
         <td>{{spotifyInfo.name}}</td>

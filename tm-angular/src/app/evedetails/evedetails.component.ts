@@ -14,8 +14,8 @@ export class EvedetailsComponent implements OnInit {
 infoselect: boolean=true;
 artistselect: boolean = false;
 venueselect: boolean = false;
-detailsInfo:any={};
-spotifyInfo:any={};
+detailsInfo:any;
+spotifyInfo:any;
 detailsready:boolean=false;
 artistsInfo:any={"artists":{"items":null}}
 
