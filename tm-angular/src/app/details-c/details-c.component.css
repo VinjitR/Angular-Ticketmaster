@@ -1,0 +1,12 @@
+@keyframes slideInRight {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+.ed{
+    animation: 1s ease-out 0s 1 slideInRight;
+}

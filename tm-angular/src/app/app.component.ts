@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm,  FormsModule,FormBuilder,FormGroup } from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
 
 @Component({
@@ -11,27 +11,30 @@ export class AppComponent implements OnInit{
   title = 'angular-ticketmaster';
   submitted:boolean;
   details:any="";
-  keyword:string;
-  category: string;
-  distance: string;
-  units: string;
-  location: string;
-  location2: string;
+  // keyword:string;
+  // category: string;
+  // distance: string;
+  // units: string;
+  // location: string;
+  // location2: string;
   display:boolean;
   nodisplay:boolean;
   iploc:any;
   formData:any={};
   redis:boolean;
   favdis:boolean;
+  ticketForm:FormGroup;
+  isDisabled:boolean;
 
-
-  constructor(private http:HttpClient) { 
-    this.keyword='';
-    this.category='All';
-    this.distance='';
-    this.units='miles';
-    this.location='curloc';
-    this.location2='';
+  constructor(private http:HttpClient,private fb:FormBuilder) { 
+    this.isDisabled=true;
+    this.ticketForm=this.fb.group({
+    keyword:[''],
+    category:['All'],
+    distance:[''],
+    units:['miles'],
+    location: ['curloc'],
+    location2:[{value: '', disabled: this.isDisabled}]})
     this.submitted=false;
     this.display=false;
     this.nodisplay=false;
@@ -55,19 +58,19 @@ export class AppComponent implements OnInit{
 
   }
 
-  onSubmit(form:NgForm){
-    if (form.valid){
-      if (form.value.distance==''){
-        form.value.distance='10';
+  onSubmit(){
+    if (this.ticketForm.valid){
+      if (this.ticketForm.value.distance==''){
+        this.ticketForm.value.distance='10';
       }
         this.submitted=true;
-        if (form.value.location=='curloc'){
-          form.value.location2=this.iploc.loc;
+        if (this.ticketForm.value.location=='curloc'){
+          this.ticketForm.value.location2=this.iploc.loc;
         }
-        console.log(form.value)
+        console.log(this.ticketForm.value)
         this.http.get("http://localhost:8080/getticket",
         {
-          params:form.value
+          params:this.ticketForm.value
         }).subscribe(
           data => { this.details = data;
                   this.submitted=true;
@@ -86,9 +89,22 @@ export class AppComponent implements OnInit{
     }
   }
 
-  onReset(form:NgForm){
-    form.resetForm();
-    this.display=false;
+  // changeDisabled(){
+  //   if(this.ticketForm.value.location=="curloc"){
+  //     this.isDisabled=true;
+  //     console.log(this.isDisabled);
+  //   }
+  //   else if (this.ticketForm.value.location=="othloc"){
+  //     this.isDisabled=false;
+  //   }
+
+
+
+  //}
+
+  onReset(){
+    this.submitted=false;
+    this.ticketForm.reset();
 
   }
 

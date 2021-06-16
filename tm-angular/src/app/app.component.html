@@ -1,14 +1,14 @@
-<div class="container">
+<div class="container-flex">
 
 
-  <form class="container bg-light"#ticketForm="ngForm" (ngSubmit)="onSubmit(ticketForm)">
+  <!-- <form class="container bg-light"#ticketForm="ngForm" (ngSubmit)="onSubmit(ticketForm)">
     <h2 class="text-center"> Entertainment and Event Search</h2>
       <div class="form-group row justify-content-left required">
           <label for="keyword" class="control-label col-sm-2 offset-sm-2">Keyword</label>
           <div class="col-sm-6">
               <input #keywordc="ngModel" type="text" name="keyword" class="form-control"
                placeholder="Enter Artist, Team or Event Name (eg. Lakers)" id="Keyword" 
-               [(ngModel)]="keyword" required />
+               [(ngModel)]="keyword" required/>
           <div *ngIf="keywordc.invalid && ((keywordc.dirty || keywordc.touched)) " class="alert">
                         <span style="color:red">Please enter a keyword</span>
                     </div>
@@ -73,7 +73,75 @@
           </div>
       </div>
   </form>
-</div>
+</div> -->
+<div class="container bg-light">
+  <h2 class="text-center"><br>Entertainment Event Ticket Search</h2><br>
+  <form [formGroup]="ticketForm" class="needs-validation" (ngSubmit)="onSubmit()" novalidate>
+      <div class="form-group row justify-content-left required">
+          <label for="keyword" class="control-label col-sm-2 offset-sm-2">Keyword</label>
+          <div class="col-sm-6">
+              <input  type="text" name="keyword" class="form-control" placeholder="Enter Artist, Team or Event Name (eg. Lakers)" id="Keyword" formControlName="keyword" required/>
+              <!-- <div *ngIf="ticketForm.keyword.invalid && (ticketForm.keyword.dirty || ticketForm. keyword.touched)" class="alert">
+                  <span style="color:red">Please enter a keyword</span>
+              </div> -->
+              <div class="invalid-feedback">
+               Please Enter a keyword.
+              </div>
+          </div>
+      </div>
+
+      <div class="form-group row justify-content-left">
+          <label for="Category" class="control-label col-sm-2 offset-sm-2">Category</label>
+          <div class="col-sm-2">
+              <select name="Category" class="form-control" id="Category" formControlName="category">
+                  <option value="All" selected>All</option>
+                  <option value="KZFzniwnSyZfZ7v7nJ">Music</option>
+                  <option value="KZFzniwnSyZfZ7v7nE">Sports</option>
+                  <option value="KZFzniwnSyZfZ7v7na">Arts & Theatre</option>
+                  <option value="KZFzniwnSyZfZ7v7nn">Film</option>
+                  <option value="KZFzniwnSyZfZ7v7nl">Miscellaneous</option>
+              </select>
+          </div>
+      </div>
+
+      <div class="form-group row justify-content-left">
+          <label for="Distance" class="control-label col-sm-2 offset-sm-2">Distance</label>
+          <div class="col-sm-2">
+              <input formControlName="distance" type="text" class="form-control" id="Distance" placeholder="10" name="distance">
+          </div>
+          <div class="col-sm-2">
+              <select formControlName="units"class="form-control" name="units">
+                  <option value="miles" selected>Miles</option>
+                  <option value="kilometers">Kilometers</option>
+              </select>
+          </div>
+      </div>
+      <div class="form-group row justify-content-left required">
+          <label for="current_location" class="control-label col-sm-2 offset-sm-2">From</label>
+          <div class="col-sm-6">
+              <input formControlName="location" type="radio" name="location" id="current_location" value="curloc" (change)="ticketForm.controls.location2.disable();"checked>
+              <label  for="current_location"> Current Location</label>
+              <br>
+              <input #othradio formControlName="location" type="radio" name="location" id="other_location" value="othloc" (change)="ticketForm.controls.location2.enable();" >
+              
+              <label  for="other_location"> Others, Please specify:</label>
+              <div class="col-md-30">
+                  <input type="text" formControlName="location2" class="form-control" placeholder="Enter a location" id="location2" name="location2"/>
+              </div>
+          </div>
+      </div>
+
+
+      <div class="form-group row">
+          <div class="control-label offset-sm-2 mb-4">
+              <button type="submit" class="btn btn-primary">
+                  <i class="material-icons">search</i> Search</button>
+                  <button type="reset" class="btn btn-default" (click)="onReset()">
+                  <i class="material-icons">clear_all</i>Clear</button>
+          </div>
+      </div>
+          </form>
+      </div>
 
 
   <div class="row mx-auto">
@@ -82,9 +150,8 @@
       <button class="btn btn-default" (click)="redis=false;favdis=true"><span style="color: blue;">Favourites</span></button>
     </div>
   </div>
-
-<div class="container" *ngIf="redis">
-  Results
+<div *ngIf="submitted">
+<div class="container-flex" *ngIf="redis">
   <div id="display" *ngIf="display">
     <!--<div class="progress mt-5" (show)="progress">
       <div class="progress-bar progress-bar-striped progress-bar-animated active" style="width:50%"></div> -->
@@ -94,5 +161,6 @@
 </div>
 <div class="container" *ngIf="!redis">
   Favourites
+</div>
 </div>
 

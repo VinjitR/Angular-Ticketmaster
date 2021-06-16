@@ -1,6 +1,9 @@
 <!-- <p>{{eventD.page.totalElements}}</p> -->
 
-<table class="table">
+<div class="container table-responsive" *ngIf="!evedetaildisplay">
+    <button class="btn btn-light" (click)="evedetaildisplay=true;" [disabled]="evedetaildisplay2">Details</button>
+
+    <table class="table">
     <thead class="thead-light ">
       <tr class="border border-dark-1">
         <th scope="col">#</th>
@@ -15,7 +18,7 @@
         <tr *ngFor="let event of eventD._embedded.events;let i=index">
             <th>{{i+1}}</th>
             <td>{{event.dates.start.localDate}}</td>
-            <td><a class="link" (click)="displayevent(event.id);detaildisplay=true">{{event.name.substring(0,35)}}</a></td>
+            <td><a class="link" (click)="displayevent(event.id);evedetaildisplay=true;evedetaildisplay2=false">{{event.name.substring(0,35)}}</a></td>
             <td>
                 <div class="row" *ngFor="let cat of event.classifications">
                      <div *ngIf="(cat.genre.name!=='Undefined') && (cat.genre!==undefined) ">{{cat.genre.name}} | </div>
@@ -41,5 +44,11 @@
         </tr>
     </tbody>
 </table>
-<evedetails *ngIF="evedetailsdisplay"></evedetails>
+
+</div>
+<div class="container ed" id="evedetaildisplay" *ngIf="evedetaildisplay">
+    <button class="btn btn-light" (click)="evedetaildisplay=false;">list</button>
+    <app-evedetails [eventdetailsid]="event" ></app-evedetails>
+</div>
+
 

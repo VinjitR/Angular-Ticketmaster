@@ -1,1 +1,100 @@
-<p>evedetails works!</p>
+<div class="container">
+    <div class="row justify-content-end">
+        <button class="btn btn-sm">tw</button>
+        <button class="btn btn-sm">fav</button>
+    </div>
+    <div class="row justify-content-center" [hidden]="detailsInfo.name==undefined">
+      <h3>{{detailsInfo.name}}</h3>
+    </div>
+    <ul class="nav nav-tabs justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link " href="#eventinfo" (click)="infoselect=true;artistselect=false;venueselect=false" [ngClass]="infoselect ? 'active' : ''">Event</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="#a&t" (click)="artistselect=true;infoselect=false;venueselect=false" [ngClass]="artistselect ? 'active' : ''">Artist/Team</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="#venue" (click)="venueselect=true;artistselect=false;infoselect=false" [ngClass]="venueselect ? 'active' : ''">Venue</a>
+        </li>
+    </ul>
+</div>
+<div class="container" *ngIf="infoselect" id="eventinfo">
+    <table [hidden]="!detailsready" class="table table-striped">
+      <tbody>
+        <tr [hidden]="!(detailsInfo._embedded!=undefined && detailsInfo!=undefined )">
+            <th scope="row">Artist / Team(s)
+            </th>
+            <td [hidden]="detailsInfo._embedded.attractions==undefined &&detailsInfo._embedded.attractions.length==0">
+                <div *ngFor="let att of detailsInfo._embedded.attractions;let i=index">
+                  <span *ngIf="i==0 && i!=undefined"><span [hidden]="att.name==undefined">{{att.name}} </span></span>
+                  <span *ngIf="i!=0 && i!=undefined"><span [hidden]="att.name==undefined">| {{att.name}} </span></span>
+                </div>
+            </td>
+        </tr>
+        <!--<span [hidden]="detailsInfo._embedded.attractions[1].name!=undefined && detailsInfo._embedded.attractions[1]!=undefined"> | {{detailsInfo._embedded.attractions[1].name}}</span>-->
+        <tr [hidden]="!(detailsInfo._embedded!=undefined && detailsInfo!=undefined &&detailsInfo._embedded.venues[0].name!=undefined)">
+            <th scope="row">Venue</th>
+            <td>{{detailsInfo._embedded.venues[0].name}}</td>
+        </tr>
+        <tr [hidden]="!(detailsInfo._embedded!=undefined && detailsInfo!=undefined && detailsInfo.dates.start.localTime!=undefined)">
+            <th scope="row" style="width: 25%;">Time</th>
+            <td class="" style="width: 75%;">{{detailsInfo.dates.start.localDate | date}}</td>
+        </tr>
+        <tr [hidden]=" detailsInfo==undefined &&detailsInfo.classifications==undefined">
+            <th scope="row">Category</th>
+            <td class="">{{detailsInfo.classifications[0].genre.name}}
+                |
+                {{detailsInfo.classifications[0].segment.name}}</td>
+        </tr>
+        <tr [hidden]=" detailsInfo==undefined &&detailsInfo.priceRanges==undefined">
+            <th scope="row">Price Range</th>
+            <td class="">${{detailsInfo.priceRanges[0].min}}
+                ~ ${{detailsInfo.priceRanges[0].max}}</td>
+        </tr>
+        <tr [hidden]="detailsInfo==undefined && detailsInfo.dates==undefined">
+            <th scope="row">Ticket Status</th>
+            <td class="">{{detailsInfo.dates.status.code}}</td>
+        </tr>
+        <tr [hidden]="detailsInfo==undefined && detailsInfo.url==undefined">
+            <th scope="row">Buy Ticket At</th>
+            <td class="">
+                <a href="{{detailsInfo.url}}" target="_blank">Ticketmaster</a>
+            </td>
+        </tr>
+        <tr [hidden]="detailsInfo==undefined && detailsInfo.seatmap==undefined&&detailsInfo.seatmap.staticUrl==undefined">
+            <th scope="row">Seat Map</th>
+            <td class="">
+                <a href="{{detailsInfo.seatmap.staticUrl}}" target="_blank">
+                    View Seat Map here</a>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+<div class="container" [hidden]="!artistselect" id="a&t">
+  <table class="table">
+    <tbody>
+      <tr>
+        <th>Name</th>
+        <td>{{spotifyInfo.name}}</td>
+      </tr>
+      <tr>
+        <th>Followers</th>
+        <td [hidden]="spotifyInfo.followers==undefined&&spotifyInfo.followers.total==undefined">{{spotifyInfo.followers.total}}</td>
+      </tr>
+      <tr >
+        <th>Popularity</th>
+        <td><div class="posrel"><round-progress [current]="spotifyInfo.popularity" [max]=100 [radius]=25 [stroke]=5 [clockwise]=false></round-progress><div class="popval">{{spotifyInfo.popularity}}</div></div></td>
+      </tr>
+      <tr>
+        <th>Check At</th>
+        <td><a href={{spotifyInfo.external_urls.spotify}} target="_blank">Spotify</a></td>
+      </tr>
+
+    </tbody>
+  </table>
+    
+</div>
+<div class="container" [hidden]="!venueselect" id="venue">
+    Venue
+</div>
