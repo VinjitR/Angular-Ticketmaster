@@ -1,7 +1,10 @@
 <div class="container">
     <div class="row justify-content-end">
-        <button class="btn btn-sm">tw</button>
-        <button class="btn btn-sm">fav</button>
+        <a class="twitter-share-button"
+          href="{{tweeturl}}" target="_blank">
+          <img src="https://csci571.com/hw/hw8/images/Twitter.png" height=30 width=30></a>
+        <button class="btn btn-sm"><mat-icon aria-hidden="false" aria-label="Example home icon">star</mat-icon>
+        </button>
     </div>
     <div class="row justify-content-center" *ngIf="detailsInfo!=undefined&&detailsInfo.name!=undefined">
       <h3>{{detailsInfo.name}}</h3>
@@ -72,6 +75,8 @@
     </table>
 </div>
 <div class="container" [hidden]="!artistselect" id="a&t">
+  <!-- <div  *ngIf="noSpotify==true">No Records</div>
+  <div  *ngIf="noSpotify==false">
   <table class="table">
     <tbody *ngIf="spotifyInfo!=undefined">
       <tr>
@@ -94,7 +99,71 @@
     </tbody>
   </table>
     
+</div> -->
+<div>
+  <div *ngIf="detailsInfo._embedded.attractions==undefined">Norecords</div>
+  <div *ngFor="let d of detailsInfo._embedded.attractions;let i=index">
+    <div class="row justify-content-center"><h3>{{d.name}}</h3></div>
+    <div *ngIf="artistsInfo[i]==undefined || artistsInfo[i].artists==undefined || artistsInfo[i].artists.items==undefined||artistsInfo[i].artists.items.length==0||noSpotify==true">No Records</div>
+    <div *ngIf="artistsInfo[i]!=undefined && artistsInfo[i].artists!=undefined && artistsInfo[i].artists.items.length>0">
+      <table class="table">
+        <tr>
+          <th>Name</th>
+          <td>{{artistsInfo[i].artists.items[0].name}}</td>
+        </tr>
+        <tr>
+          <th>Followers</th>
+          <td [hidden]="artistsInfo[i].artists.items[0].followers==undefined&&artistsInfo[i].artists.items[0].followers.total==undefined">{{artistsInfo[i].artists.items[0].followers.total}}</td>
+        </tr>
+        <tr >
+          <th>Popularity</th>
+          <td><div class="posrel"><round-progress [current]="artistsInfo[i].artists.items[0].popularity" [max]=100 [radius]=25 [stroke]=5 [clockwise]=false></round-progress><div class="popval">{{artistsInfo[i].artists.items[0].popularity}}</div></div></td>
+        </tr>
+        <tr>
+          <th>Check At</th>
+          <td><a href={{artistsInfo[i].artists.items[0].external_urls.spotify}} target="_blank">Spotify</a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  
+</div>
 </div>
 <div class="container" [hidden]="!venueselect" id="venue">
-    Venue
+  <table class="table">
+    <tbody *ngIf="venueInfo!=undefined&&venueInfo._embedded!=undefined&&venueInfo._embedded.venues[0]!=undefined">
+      <tr>
+        <th>Address</th>
+        <td>{{venueInfo._embedded.venues[0].address.line1}}</td>
+      </tr>
+      <tr>
+        <th>City</th>
+        <td>{{venueInfo._embedded.venues[0].city.name}}, {{venueInfo._embedded.venues[0].state.name}}</td>
+      </tr>
+      <tr *ngIf="venueInfo._embedded.venues[0].boxOfficeInfo!=undefined && venueInfo._embedded.venues[0].boxOfficeInfo.phoneNumberDetail!=undefined">
+        <th>Phone Number</th>
+        <td>{{venueInfo._embedded.venues[0].boxOfficeInfo.phoneNumberDetail}}</td>
+      </tr>
+      
+      <tr *ngIf="venueInfo._embedded.venues[0].boxOfficeInfo!=undefined && venueInfo._embedded.venues[0].boxOfficeInfo.openHoursDetail!=undefined">
+        <th>Open Hours</th>
+        <td>{{venueInfo._embedded.venues[0].boxOfficeInfo.openHoursDetail}}</td>
+      </tr>
+      <tr *ngIf="venueInfo._embedded.venues[0].boxOfficeInfo!=undefined && venueInfo._embedded.venues[0].generalInfo.generalRule!=undefined">
+        <th>General Rule</th>
+        <td>{{venueInfo._embedded.venues[0].generalInfo.generalRule}}</td>
+      </tr>
+      <tr *ngIf="venueInfo._embedded.venues[0].boxOfficeInfo!=undefined && venueInfo._embedded.venues[0].generalInfo.childRule!=undefined">
+        <th>Child Rule</th>
+        <td>{{venueInfo._embedded.venues[0].generalInfo.childRule}}</td>
+      </tr>
+      
+        
+<!--<agm-map [latitude]="lat" [longitude]="lng">
+  
+</agm-map-->
+    </tbody>
+  </table>
+  <div class="container mb-4" *ngIf="vlat!=undefined
+         && vlng!=undefined"><agm-map [zoom]="15" [latitude]="vlat" [longitude]="vlng"><agm-marker [latitude]="vlat" [longitude]="vlng"></agm-marker></agm-map></div>
 </div>

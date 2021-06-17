@@ -156,22 +156,6 @@ var spotifyApi = new SpotifyWebApi({
 app.get('/spotify',function(req, res)
 {
   var params = req.query;
-	var url_text_spotify= "https://api.spotify.com/v1/search?q="+params.Keyword+"type=artist";
-	console.log( "https://api.spotify.com/v1/search?q="+params.Keyword+"type=artist");
-	
-	// https.get(url_text_spotify,function(requ,resu)
-	// {
-  //       var res_text = "";
-  //       requ.on('data',function(data)
-	// 	{
-  //           res_text+=data;
-			
-  //       });
-  //       requ.on('end',function(){
-  //           return res.send(res_text);
-  //       });
-
-  //   });
   async function getacess(){
   spotifyApi.clientCredentialsGrant().then(
     function(data) {
@@ -194,7 +178,7 @@ app.get('/spotify',function(req, res)
     
   spotifyApi.searchArtists(params.Keyword)
   .then(function(data) {
-    console.log('Search artists by "Love"', data.body);
+    //console.log('Search artists', data.body);
     res.send(data.body);
   }, function(err) {
     getacess();
@@ -231,11 +215,27 @@ app.get('/auto_complete',function(req,res){
 });
 
 
-// app.get('/google_venue',function(req,res){
 
 
-//   var
-// });
+
+app.get('/getvenue',function(req,res){
+  var params=req.query;
+  var venurl='https://app.ticketmaster.com/discovery/v2/venues.json?apikey=s8R7CnAgaR6EFkySWAVDsmg8W757S4Yc&keyword='+params.key;
+  https.get(venurl,function(requ,resp)
+  {
+      var res_text = "";
+      requ.on('data',function(data)
+  {
+          res_text+=data;
+    
+      });
+      requ.on('end',function()
+  {
+          return res.send(res_text);
+      });
+
+  });
+});
 
 
 
