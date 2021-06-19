@@ -80,10 +80,16 @@
       <div class="form-group row justify-content-left required">
           <label for="keyword" class="control-label col-sm-2 offset-sm-2">Keyword</label>
           <div class="col-sm-6">
-              <input  type="text" name="keyword" class="form-control" placeholder="Enter Artist, Team or Event Name (eg. Lakers)" id="Keyword" formControlName="keyword" required/>
+              <input  type="text" name="keyword" class="form-control" placeholder="Enter Artist, Team or Event Name (eg. Lakers)" id="Keyword"
+              matInput formControlName="keyword" [matAutocomplete]="auto" required/>
               <!-- <div *ngIf="ticketForm.keyword.invalid && (ticketForm.keyword.dirty || ticketForm. keyword.touched)" class="alert">
                   <span style="color:red">Please enter a keyword</span>
               </div> -->
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptions | async " [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+              </mat-autocomplete>
               <div class="invalid-feedback">
                Please Enter a keyword.
               </div>
@@ -134,9 +140,9 @@
 
       <div class="form-group row ">
           <div class="control-label col-sm-4 offset-sm-2">
-              <button type="submit" class="btn btn-primary mx-2">
-                  <i class="material-icons">search</i> Search</button>
-                  <button type="reset" class="btn btn-default mx-4" (click)="onReset()">
+              <button type="submit" class="btn btn-primary mx-2" [disabled]="this.iploc==''">
+                  <i class="material-icons" >search</i> Search</button>
+                  <button type="button" class="btn btn-default mx-4" (click)="onReset()">
                   <i class="material-icons">clear_all</i>Clear</button>
           </div>
       </div>
@@ -146,8 +152,8 @@
 
   <div class="row mx-auto">
     <div class="col-md-auto mx-auto">
-      <button class="btn btn-primary" (click)="redis=true; favdis=false">Results</button>
-      <button class="btn btn-default" (click)="redis=false;favdis=true"><span style="color: blue;">Favourites</span></button>
+      <button class="btn btn-primary" [ngClass]="{'btn-default': !clicked, 'btn-primary': clicked}"(click)="redis=true; favdis=false;clicked = !clicked">Results</button>
+      <button class="btn btn-default" [ngClass]="{'btn-default': clicked, 'btn-primary': !clicked}"(click)="redis=false;favdis=true;clicked = !clicked">Favourites</button>
     </div>
   </div>
 <div *ngIf="submitted">
@@ -157,10 +163,13 @@
       <div class="progress-bar progress-bar-striped progress-bar-animated active" style="width:50%"></div> -->
       <app-details-c [eventD]="details"></app-details-c>
     </div>
-  <div id="no-display" *ngIf="nodisplay">No Records found</div>
+  <div class="alert alert-warning justify-content-center text-center"id="no-display" *ngIf="nodisplay">No Records found</div>
 </div>
 <div class="container" *ngIf="!redis">
-  Favourites
+  <app-favorites></app-favorites>
 </div>
+
 </div>
+<div class="alert alert-danger justify-content-center text-center mt-6" *ngIf="errorinfo">Failed to fetch results</div>
+
 

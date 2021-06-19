@@ -1,7 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,Injectable} from '@angular/core';
 import { NgForm,  FormsModule,FormBuilder,FormGroup } from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
+import { Observable,of } from 'rxjs';
+import {map, startWith,switchMap,filter, debounce, debounceTime} from 'rxjs/operators';
 
+@Injectable({
+  providedIn: 'root'
+})
+export class Service {
+  constructor(private http: HttpClient) { }
+
+  opts:any = [];
+
+  getData(value:string) {
+        this.http.get("http://localhost:8080/auto_complete",{
+      params:{"keyword":value}
+    })
+    .subscribe(response=>{this.opts=response;});
+    return of(this.opts);
+  }
+}
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -25,16 +43,25 @@ export class AppComponent implements OnInit{
   favdis:boolean;
   ticketForm:FormGroup;
   isDisabled:boolean;
+  errorinfo:boolean=false;
+  clicked:boolean=true;
 
-  constructor(private http:HttpClient,private fb:FormBuilder) { 
+
+  filteredOptions: Observable<any> | any;
+
+
+
+
+  constructor(private http:HttpClient,public fb:FormBuilder,private service:Service) { 
     this.isDisabled=true;
     this.ticketForm=this.fb.group({
-    keyword:[''],
-    category:['All'],
-    distance:[''],
-    units:['miles'],
-    location: ['curloc'],
-    location2:[{value: '', disabled: this.isDisabled}]})
+      keyword:[''],
+      category:['All'],
+      distance:[''],
+      units:['miles'],
+      location: ['curloc'],
+      location2:[{value: '', disabled: this.isDisabled}]});
+    
     this.submitted=false;
     this.display=false;
     this.nodisplay=false;
@@ -42,10 +69,21 @@ export class AppComponent implements OnInit{
     this.formData={};
     this.redis=true;
     this.favdis=false;
+    
   }
 
   ngOnInit(): void{
+    this.ticketForm=this.fb.group({
+      keyword:[''],
+      category:['All'],
+      distance:[''],
+      units:['miles'],
+      location: ['curloc'],
+      location2:[{value: '', disabled: this.isDisabled}]});
+
     this.details="";
+
+    //iploc
     this.http.get("https://ipinfo.io?token=d87014741e8aab")
     .subscribe( response=>{this.iploc=response;
                           console.log(this.iploc.loc);
@@ -55,8 +93,50 @@ export class AppComponent implements OnInit{
 
     //https://ipinfo.io?token=d87014741e8aab
     //ipinfo call
-
+    //Autocomplete
+    this.filteredOptions = this.ticketForm.controls.keyword.valueChanges.pipe(
+      // debounceTime(2000),
+      startWith(''),
+      switchMap(value => this._filter(value))
+    );
+      
   }
+  private _filter(value: string) {
+    const filterValue = value.toLowerCase();
+    // if (value.length == 0 ){
+    //   return [];
+    // }
+    // else {
+      return this.http.get("http://localhost:8080/auto_complete",{
+        params:{"keyword":value}
+      }).pipe(
+        filter(data => !!data),
+        map(data => {
+          console.log(data);
+          // let fo= data.filter((option:any) =>{
+          //   option.name.toLowerCase().includes(filterValue)});
+            
+            return data;         
+           })
+      );
+    // }
+   
+  }
+
+    
+    // this.http.get("http://localhost:8080/auto_complete",{
+    //   params:{"keyword":value}
+    // })
+    // .subscribe(response=>{this.options_data=response;})
+    // for (var o of this.options_data){
+    //   this.options=o.name;
+    // }
+    // return this.options.filter((option:string) => option.toLowerCase().includes(filterValue));
+    
+  
+
+
+
 
   onSubmit(){
     if (this.ticketForm.valid){
@@ -72,18 +152,32 @@ export class AppComponent implements OnInit{
         {
           params:this.ticketForm.value
         }).subscribe(
-          data => { this.details = data;
+          data => { 
+                  // data._embedded['events'].sort(function(a:any,b:any){
+                  //   return new Date(a.dates.start.localDate) - new Date(b.dates.start.localDate);
+                  // })
+                  console.log(data);
+                  this.details = data;
                   this.submitted=true;
-                  if(this.details.page.totalElements=='0'){
-                    this.nodisplay=true;
-                    this.display=false;
-                  }
-                  else{
+                  
+                  if (this. details.events!=undefined &&this.details.events.length!=0 ){
                     this.display=true;
-                    this.nodisplay=false;
+                      this.nodisplay=false;
+                      
+                    }
+                  else if(this.details.error==true){
+                    this.errorinfo=true;
                   }
+                    else{
+                      this.nodisplay=true;
+                      this.display=false;
+                      
+                    }
+                    
+                  
                   console.log(this.details);},
-                err => console.error(err)
+                err => {console.log(err);
+                  this.errorinfo=true;}
               );
       
     }
@@ -104,10 +198,10 @@ export class AppComponent implements OnInit{
 
   onReset(){
     this.submitted=false;
-    this.ticketForm.reset();
+    this.ngOnInit();
+    this.errorinfo=false;
+
+
 
   }
-
-
-
-  }
+}

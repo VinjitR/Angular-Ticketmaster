@@ -1,4 +1,4 @@
-@keyframes slideInRight {
+/* @keyframes slideInRight {
     0% {
       transform: translateX(100%);
     }
@@ -9,4 +9,7 @@
 
 .ed{
     animation: 0.5s ease-out 0s 1 slideInRight;
+} */
+#yellow{
+  color: yellow;
 }

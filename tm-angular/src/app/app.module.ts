@@ -4,6 +4,8 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule} from '@angular/common/http';
 import {RoundProgressModule} from 'angular-svg-round-progressbar';
 import { AgmCoreModule } from '@agm/core';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,12 +13,14 @@ import { AppComponent } from './app.component';
 import { DetailsCComponent } from './details-c/details-c.component';
 import { EvedetailsComponent } from './evedetails/evedetails.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FavoritesComponent } from './favorites/favorites.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DetailsCComponent,
-    EvedetailsComponent
+    EvedetailsComponent,
+    FavoritesComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +32,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AgmCoreModule.forRoot({
       apiKey: "AIzaSyAexWQCzwz1blNnNHbW3xhBSKjsZODiZ7w"
     }),
-    BrowserAnimationsModule//
+    BrowserAnimationsModule,
+    MatAutocompleteModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

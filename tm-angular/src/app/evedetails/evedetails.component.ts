@@ -1,11 +1,23 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {RoundProgressModule} from 'angular-svg-round-progressbar';
+import * as moment from 'moment';
+import { trigger, transition, animate, style } from '@angular/animations';
 
 @Component({
   selector: 'app-evedetails',
   templateUrl: './evedetails.component.html',
-  styleUrls: ['./evedetails.component.css']
+  styleUrls: ['./evedetails.component.css'],
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({transform: 'translateX(-100%)'}),
+        animate('200ms ease-in', style({transform: 'translateX(0%)'}))
+      ]),
+      transition(':leave', [
+        animate('200ms ease-in', style({transform: 'translateX(-100%)'}))
+      ])
+    ])
+  ]
 })
 export class EvedetailsComponent implements OnInit {
 @Input() eventdetailsid:any;
@@ -23,6 +35,7 @@ detailsready:boolean=false;
 artistsInfo:any=[];
 venueInfo:any;
 mapLoc:any;
+betterdate:any;
 vlat:any;
 vlng:any;
 
@@ -40,13 +53,15 @@ vlng:any;
     this.http.get('http://localhost:8080/getdetails',
     {
       params:paramobj
-    }).subscribe(resposnse=>{console.log(resposnse);
+    }).subscribe(resposnse=>{
       this.detailsInfo=resposnse;
       console.log(this.detailsInfo);
     this.detailsready=true;
     this.mapLoc=this.detailsInfo._embedded.venues[0].location;
     this.tweettext="Check out "+this.detailsInfo.name+" located at "+this.detailsInfo._embedded.venues[0].name+". &hashtags=CSCI571EventSearch".replace(/ /g,'+');
     this.tweeturl+=this.tweettext;
+    this.betterdate=moment(this.detailsInfo.dates.start.localDate).format('ll');
+    console.log(this.betterdate);
     if(this.detailsInfo._embedded.attractions!=undefined){
     for(var i=0; i<this.detailsInfo._embedded.attractions.length;i++){
       this.loadSptDet(i, this.detailsInfo._embedded.attractions[i].name);
@@ -104,4 +119,30 @@ async loadvenue(key:string){
     console.log(this.vlat,this.vlng)
 });
 }
+
+set_favor(idstr:string){
+  console.log(idstr);
+  if (localStorage.getItem(idstr)!=undefined){
+    localStorage.removeItem(idstr);
+  }
+  else{
+ 
+    if(this.detailsInfo.id==idstr){
+      console.log(idstr,this.detailsInfo)
+      localStorage.setItem(idstr, JSON.stringify(this.detailsInfo));
+    }
+  }
+
+  
+}
+checkfavor(idstr:string): string | undefined{
+  if(localStorage.getItem(idstr)!=undefined){
+    return idstr;
+  }
+  else{
+    return undefined;
+  }
+
+}
+
 }

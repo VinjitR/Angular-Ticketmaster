@@ -1,0 +1,54 @@
+<div class="container" *ngIf="!evedetaildisplay" [@slideInOut]>
+    <div class="container">
+    <div *ngIf="favorite_details.length!=0" class="row justify-content-end">
+        <button class="btn btn-light" (click)="evedetaildisplay=true;" [disabled]="evedetaildisplay2">Details
+            <i class="material-icons">keyboard_arrow_right</i>
+        </button>
+    </div>
+    </div>
+
+    <div class="table-responsive" *ngIf="favorites">
+        <table *ngIf="favorite_details.length!=0" class="table">
+            <thead>
+                <tr class="border border-dark-1">
+                    <th scope="col">#</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Event</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Venue Info</th>
+                    <th scope="col">Favourites</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="favrecords">
+                <tr  *ngFor="let f of favorite_details; let i=index;">
+                    <td>
+                        {{i+1}}
+                    </td>
+                    <td [hidden]="f.dates==undefined || f.dates.start==undefined ||f.dates.start.localDate==undefined">
+                        {{f.dates.start.localDate}}
+                    </td>
+                    <td [hidden]="f.name==undefined">
+                        <a href="" (click)="displayevent(f.id);evedetaildisplay=true;evedetaildisplay2=false" data-toggle="tooltip" data-placement="top" title="{{f.name}}">{{f.name.substring(0,35)}}</a>
+                    </td>
+                    <td [hidden]="f.classifications==undefined">
+                        <span [hidden]="f.classifications[0].genre==undefined || f.classifications[0].genre.name==undefined">{{f.classifications[0].genre.name}}</span><span [hidden]="f.classifications[0].segment==undefined || f.classifications[0].segment.name==undefined">| {{f.classifications[0].segment.name}}</span>
+                    </td>
+                    <td [hidden]="f.classifications==undefined || f._embedded==undefined ||f._embedded.venues==undefined || f._embedded.venues[0].name==undefined">
+                        {{f._embedded.venues[0].name}}
+                    </td>
+                    <td>
+                        <button class="btn btn-sm default" style="border:none;background:transparent" name={{f.id}} (click)="del_favor(f.id);"><i class="material-icons">delete</i></button>
+                    </td>
+                </tr>
+
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="alert alert-warning" *ngIf="favorite_details.length==0 && favrecords==false">No favorites</div>
+</div>
+<div class="container ed" id="evedetaildisplay" *ngIf="evedetaildisplay">
+    <button class="btn btn-light" (click)="evedetaildisplay=false;"><i class="material-icons">keyboard_arrow_left</i> list</button>
+    <app-evedetails [eventdetailsid]="event" ></app-evedetails>
+</div>

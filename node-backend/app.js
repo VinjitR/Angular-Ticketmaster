@@ -20,7 +20,6 @@ app.get('/getticket', function(req, res) {
   //http://localhost:8080/getdetails?id=vv1AaZAqUGkdLRJxS
 
   // res.setHeader("Access-Control-Allow-Origin","*");
-  var location='';
    var params=req.query;
    var ticketurl='https://app.ticketmaster.com/discovery/v2/events.json?apikey=s8R7CnAgaR6EFkySWAVDsmg8W757S4Yc&keyword='+params.keyword.replace(' ','+');
    if (params.category!="All"){
@@ -59,48 +58,98 @@ app.get('/getticket', function(req, res) {
         gloc= geohash.encode(glat,glng);
         ticketurl+='&geoPoint='+gloc;
         getcall();
-      })
-      
-
-      
-  //     (async () => {
-  //       try {
-  //       const response = await axios.get(glink);
-  //       let lat=response.data.results[0].geometry.location.lat;
-  //       let lng=response.data.results[0].geometry.location.lng;
-  //       let glocation=geohash.encode(lat,lng);
-  //       console.log(glocation);
-  //       ticketurl+='&geoPoint='+glocation;
-  //   }
-  //   catch (error) {
-  //     console.log(error.response.body);
-  //   }
-  // })();
-      
-      
+      });
     }
+      
     
   async function getcall(){
+    // ticketurl+="&sort=relevance,date,asc";
     console.log(ticketurl);
-  https.get(ticketurl,function(requ,resp)
-		{   
-        var res_text = "";
-        requ.on('data',function(data)
-		{
-            res_text+=data;
-			
-        });
-        requ.on('end',function()
-		{
-            return res.send(res_text);
-        });
-
-		})
-    .catch((err)=>{
-      res.send("Error to send data");
-    });
+    axios.get(ticketurl)
+    .then(async (response) => {
+     let data = await getevents(response.data);
+     console.log(data);
+     res.send(data);
+    
+    })
+    .catch(console.error)
+ 
   }
-  });
+
+  
+
+  async function getevents(ticketinfo){
+    
+    event_data = {"events":[]}
+    genres_list = ""
+    if (ticketinfo==!undefined){
+      return {"error":true}
+    }
+    if(ticketinfo.page.totalElements==0){
+      return event_data;
+    }
+    ticketinfo = ticketinfo["_embedded"]["events"]
+    
+
+    for(var i in ticketinfo)
+    {
+
+      cat = ""
+      if ('subGenre' in ticketinfo[i]['classifications'][0])
+      {
+        if(ticketinfo[i]['classifications'][0]['subGenre']['name'] != "Undefined")
+            cat = cat + ticketinfo[i]['classifications'][0]['subGenre']['name']+" | "
+      }
+
+      if ('genre' in ticketinfo[i]['classifications'][0])
+      {
+        if(ticketinfo[i]['classifications'][0]['genre']['name'] != "Undefined")
+           cat = cat + ticketinfo[i]['classifications'][0]['genre']['name']+" | "
+      }
+
+      if ('segment' in ticketinfo[i]['classifications'][0])
+      {
+        if(ticketinfo[i]['classifications'][0]['segment']['name'] != "Undefined")
+           cat = cat + ticketinfo[i]['classifications'][0]['segment']['name']+" | "
+      }
+
+      if ('subType' in ticketinfo[i]['classifications'][0])
+      {
+        if(ticketinfo[i]['classifications'][0]['subType']['name'] != "Undefined")
+           cat = cat + ticketinfo[i]['classifications'][0]['subType']['name']+" | "
+      }
+
+      if ('type' in ticketinfo[i]['classifications'][0])
+      {
+        if(ticketinfo[i]['classifications'][0]['type']['name'] != "Undefined")
+           cat = cat + ticketinfo[i]['classifications'][0]['type']['name']
+      }
+
+      cat = cat.substring(0, cat.length-3);
+      //console.log(cat)
+
+      event_data['events'].push({'datetime' : ticketinfo[i]['dates']['start']['localDate'],
+                                   'event' : ticketinfo[i]['name'],
+                                   'id':ticketinfo[i]['id'],
+                                   'genre' : cat,
+                                   'venue': ticketinfo[i]['_embedded']['venues'][0]['name']})
+
+    }
+    event_data['events'].sort(function(a,b){                  //Sort in ascending order according to dates
+      // Turn your strings into dates, and then subtract them
+      // to get a value that is either negative, positive, or zero.
+      return new Date(a.datetime) - new Date(b.datetime);
+    });
+    // console.log(event_data)
+    return event_data; 
+  }
+  
+  
+
+
+
+
+});
 
 app.get('/googleloc',function(req,res){
   var params=req.query
@@ -118,8 +167,9 @@ app.get('/googleloc',function(req,res){
     
       });
       requ.on('end',function()
-  {
+  { 
           return res.send(res_text);
+          
       });
 
   });
@@ -197,20 +247,14 @@ app.get('/auto_complete',function(req,res){
 
   var params=req.query;
   var autourl='https://app.ticketmaster.com/discovery/v2/suggest?apikey=s8R7CnAgaR6EFkySWAVDsmg8W757S4Yc&keyword='+params.keyword;
-  https.get(autourl,function(requ,resp)
-  {
-      var res_text = "";
-      requ.on('data',function(data)
-  {
-          res_text+=data;
-    
-      });
-      requ.on('end',function()
-  {
-          return res.send(res_text);
-      });
 
-  });
+  axios.get(autourl)
+    .then( (response) => {
+      res.send(response.data._embedded.attractions);
+    })
+    .catch(console.error);
+
+
 
 });
 

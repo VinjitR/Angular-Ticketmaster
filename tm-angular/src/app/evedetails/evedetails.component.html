@@ -1,13 +1,20 @@
-<div class="container">
+<div class="container" [@slideInOut]>
     <div class="row justify-content-end">
-        <a class="twitter-share-button"
-          href="{{tweeturl}}" target="_blank">
-          <img src="https://csci571.com/hw/hw8/images/Twitter.png" height=30 width=30></a>
-        <button class="btn btn-sm"><mat-icon aria-hidden="false" aria-label="Example home icon">star</mat-icon>
-        </button>
+        <a class="twitter-share-button" href="{{tweeturl}}" target="_blank">
+            <img src="https://csci571.com/hw/hw8/images/Twitter.png" height="30" width="30"></a>
+            <button class="btn btn-sm default" name={{detailsInfo.id}} (click)="set_favor(detailsInfo.id)">
+                <div *ngIf="checkfavor(detailsInfo.id)==detailsInfo.id">
+                <i id="yellow" class="material-icons" >star</i>
+                </div>
+                <div *ngIf="checkfavor(detailsInfo.id)!=detailsInfo.id">
+                    <i class="material-icons">star_border</i>
+                </div>
+                
+        
+            </button>
     </div>
     <div class="row justify-content-center" *ngIf="detailsInfo!=undefined&&detailsInfo.name!=undefined">
-      <h3>{{detailsInfo.name}}</h3>
+        <h3>{{detailsInfo.name}}</h3>
     </div>
     <ul class="nav nav-tabs justify-content-end">
         <li class="nav-item">
@@ -23,147 +30,187 @@
 </div>
 <div class="container" *ngIf="infoselect" id="eventinfo">
     <table [hidden]="!detailsready" class="table table-striped">
-      <tbody>
-        <tr *ngIf="!(detailsInfo!=undefined && detailsInfo._embedded!=undefined  )">
-            <th scope="row">Artist / Team(s)
-            </th>
-            <td [hidden]="detailsInfo._embedded.attractions==undefined &&detailsInfo._embedded.attractions.length==0">
-                <div *ngFor="let att of detailsInfo._embedded.attractions;let i=index">
-                  <span *ngIf="i==0 && i!=undefined"><span [hidden]="att.name==undefined">{{att.name}} </span></span>
-                  <span *ngIf="i!=0 && i!=undefined"><span [hidden]="att.name==undefined">| {{att.name}} </span></span>
-                </div>
-            </td>
-        </tr>
-        <!--<span [hidden]="detailsInfo._embedded.attractions[1].name!=undefined && detailsInfo._embedded.attractions[1]!=undefined"> | {{detailsInfo._embedded.attractions[1].name}}</span>-->
-        <tr [hidden]="!(detailsInfo._embedded!=undefined && detailsInfo!=undefined &&detailsInfo._embedded.venues[0].name!=undefined)">
-            <th scope="row">Venue</th>
-            <td>{{detailsInfo._embedded.venues[0].name}}</td>
-        </tr>
-        <tr [hidden]="!(detailsInfo._embedded!=undefined && detailsInfo!=undefined && detailsInfo.dates.start.localTime!=undefined)">
-            <th scope="row" style="width: 25%;">Time</th>
-            <td class="" style="width: 75%;">{{detailsInfo.dates.start.localDate | date}}</td>
-        </tr>
-        <tr [hidden]=" detailsInfo==undefined &&detailsInfo.classifications==undefined">
-            <th scope="row">Category</th>
-            <td class="">{{detailsInfo.classifications[0].genre.name}}
-                |
-                {{detailsInfo.classifications[0].segment.name}}</td>
-        </tr>
-        <tr [hidden]=" detailsInfo==undefined &&detailsInfo.priceRanges==undefined">
-            <th scope="row">Price Range</th>
-            <td class="">${{detailsInfo.priceRanges[0].min}}
-                ~ ${{detailsInfo.priceRanges[0].max}}</td>
-        </tr>
-        <tr [hidden]="detailsInfo==undefined && detailsInfo.dates==undefined">
-            <th scope="row">Ticket Status</th>
-            <td class="">{{detailsInfo.dates.status.code}}</td>
-        </tr>
-        <tr [hidden]="detailsInfo==undefined && detailsInfo.url==undefined">
-            <th scope="row">Buy Ticket At</th>
-            <td class="">
-                <a href="{{detailsInfo.url}}" target="_blank">Ticketmaster</a>
-            </td>
-        </tr>
-        <tr [hidden]="detailsInfo==undefined && detailsInfo.seatmap==undefined&&detailsInfo.seatmap.staticUrl==undefined">
-            <th scope="row">Seat Map</th>
-            <td class="">
-                <a href="{{detailsInfo.seatmap.staticUrl}}" target="_blank">
-                    View Seat Map here</a>
-            </td>
-        </tr>
-      </tbody>
-    </table>
-</div>
-<div class="container" [hidden]="!artistselect" id="a&t">
-  <!-- <div  *ngIf="noSpotify==true">No Records</div>
-  <div  *ngIf="noSpotify==false">
-  <table class="table">
-    <tbody *ngIf="spotifyInfo!=undefined">
-      <tr>
-        <th>Name</th>
-        <td>{{spotifyInfo.name}}</td>
-      </tr>
-      <tr>
-        <th>Followers</th>
-        <td [hidden]="spotifyInfo.followers==undefined&&spotifyInfo.followers.total==undefined">{{spotifyInfo.followers.total}}</td>
-      </tr>
-      <tr >
-        <th>Popularity</th>
-        <td><div class="posrel"><round-progress [current]="spotifyInfo.popularity" [max]=100 [radius]=25 [stroke]=5 [clockwise]=false></round-progress><div class="popval">{{spotifyInfo.popularity}}</div></div></td>
-      </tr>
-      <tr>
-        <th>Check At</th>
-        <td><a href={{spotifyInfo.external_urls.spotify}} target="_blank">Spotify</a></td>
-      </tr>
+        <tbody>
+            <tr *ngIf="(detailsInfo!=undefined && detailsInfo._embedded!=undefined && detailsInfo._embedded.attractions!=undefined &&detailsInfo._embedded.attractions.length!=0 )">
+                <th scope="row">Artist / Team(s)
+                </th>
+                <td>
+                    <div class="row">
+                    <div *ngFor="let att of detailsInfo._embedded.attractions;let i=index">
+                        
+                        <div  *ngIf="i==0 && i!=undefined && att.name!=undefined">{{att.name}}</div>
+                        <div *ngIf="i!=0 && i!=undefined && att.name!=undefined">  | {{att.name}}</div>
+                        
+                    </div>
+                    </div>
+                </td>
+            </tr>
+            <!--<span [hidden]="detailsInfo._embedded.attractions[1].name!=undefined && detailsInfo._embedded.attractions[1]!=undefined"> | {{detailsInfo._embedded.attractions[1].name}}</span>-->
+            <tr [hidden]="!(detailsInfo._embedded!=undefined && detailsInfo!=undefined &&detailsInfo._embedded.venues[0].name!=undefined)">
+                <th scope="row">Venue</th>
+                <td>{{detailsInfo._embedded.venues[0].name}}</td>
+            </tr>
+            <tr [hidden]="!(detailsInfo._embedded!=undefined && detailsInfo!=undefined && detailsInfo.dates.start.localTime!=undefined)">
+                <th scope="row" style="width: 25%;">Time</th>
+                <td class="" style="width: 75%;">{{betterdate}}<!--{{detailsInfo.dates.start.localDate | date}}--></td>
+            </tr>
 
-    </tbody>
-  </table>
-    
-</div> -->
-<div>
-  <div *ngIf="detailsInfo._embedded.attractions==undefined">Norecords</div>
-  <div *ngFor="let d of detailsInfo._embedded.attractions;let i=index">
-    <div class="row justify-content-center"><h3>{{d.name}}</h3></div>
-    <div *ngIf="artistsInfo[i]==undefined || artistsInfo[i].artists==undefined || artistsInfo[i].artists.items==undefined||artistsInfo[i].artists.items.length==0||noSpotify==true">No Records</div>
-    <div *ngIf="artistsInfo[i]!=undefined && artistsInfo[i].artists!=undefined && artistsInfo[i].artists.items.length>0">
+            <tr *ngIf=" detailsInfo!=undefined && detailsInfo.classifications!=undefined">
+                <th scope="row">Category</th>
+                <td class="">{{detailsInfo.classifications[0].genre.name}}
+                    |
+                    {{detailsInfo.classifications[0].segment.name}}</td>
+            </tr>
+            <tr *ngIf=" detailsInfo!=undefined && detailsInfo.priceRanges!=undefined">
+                <th scope="row">Price Range</th>
+                <td class="">${{detailsInfo.priceRanges[0].min}}
+                    ~ ${{detailsInfo.priceRanges[0].max}}</td>
+            </tr>
+            <tr *ngIf="detailsInfo!=undefined && detailsInfo.dates!=undefined">
+                <th scope="row">Ticket Status</th>
+                <td class="">{{detailsInfo.dates.status.code}}</td>
+            </tr>
+            <tr *ngIf="detailsInfo!=undefined && detailsInfo.url!=undefined">
+                <th scope="row">Buy Ticket At</th>
+                <td class="">
+                    <a href="{{detailsInfo.url}}" target="_blank">Ticketmaster</a>
+                </td>
+            </tr>
+            <tr *ngIf="detailsInfo!=undefined && detailsInfo.seatmap!=undefined&&detailsInfo.seatmap.staticUrl!=undefined">
+                <th scope="row">Seat Map</th>
+                <td class="">
+                    <a href="#" data-toggle="modal" data-target="#seatMap_Modal">
+                        View Seat Map here</a>
+                        <div class="modal fade" id="seatMap_Modal" tabindex="-1" role="dialog" aria-labelledby="seatMap_Modal_label" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h2 class="modal-title" id="seatMap_Modal_label">View Seat Map</h2>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                      </button>
+                                  </div>
+                                  <div class="modal-body">
+                                      
+                                          <a ng-show="detailsInfo.seatmap.staticUrl!=undefined" href="{{detailsInfo.seatmap.staticUrl}}" target="_blank"><img ng-show="detailsInfo.seatmap.staticUrl!=undefined" src="{{detailsInfo.seatmap.staticUrl}}" height="350" width="450"></a>
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+<div
+    class="container" [hidden]="!artistselect" id="a&t">
+    <!-- <div  *ngIf="noSpotify==true">No Records</div>
+      <div  *ngIf="noSpotify==false">
       <table class="table">
-        <tr>
-          <th>Name</th>
-          <td>{{artistsInfo[i].artists.items[0].name}}</td>
-        </tr>
-        <tr>
-          <th>Followers</th>
-          <td [hidden]="artistsInfo[i].artists.items[0].followers==undefined&&artistsInfo[i].artists.items[0].followers.total==undefined">{{artistsInfo[i].artists.items[0].followers.total}}</td>
-        </tr>
-        <tr >
-          <th>Popularity</th>
-          <td><div class="posrel"><round-progress [current]="artistsInfo[i].artists.items[0].popularity" [max]=100 [radius]=25 [stroke]=5 [clockwise]=false></round-progress><div class="popval">{{artistsInfo[i].artists.items[0].popularity}}</div></div></td>
-        </tr>
-        <tr>
-          <th>Check At</th>
-          <td><a href={{artistsInfo[i].artists.items[0].external_urls.spotify}} target="_blank">Spotify</a></td>
-        </tr>
+        <tbody *ngIf="spotifyInfo!=undefined">
+          <tr>
+            <th>Name</th>
+            <td>{{spotifyInfo.name}}</td>
+          </tr>
+          <tr>
+            <th>Followers</th>
+            <td [hidden]="spotifyInfo.followers==undefined&&spotifyInfo.followers.total==undefined">{{spotifyInfo.followers.total}}</td>
+          </tr>
+          <tr >
+            <th>Popularity</th>
+            <td><div class="posrel"><round-progress [current]="spotifyInfo.popularity" [max]=100 [radius]=25 [stroke]=5 [clockwise]=false></round-progress><div class="popval">{{spotifyInfo.popularity}}</div></div></td>
+          </tr>
+          <tr>
+            <th>Check At</th>
+            <td><a href={{spotifyInfo.external_urls.spotify}} target="_blank">Spotify</a></td>
+          </tr>
+    
+        </tbody>
       </table>
-    </div>
-  </div>
-  
-</div>
-</div>
-<div class="container" [hidden]="!venueselect" id="venue">
-  <table class="table">
-    <tbody *ngIf="venueInfo!=undefined&&venueInfo._embedded!=undefined&&venueInfo._embedded.venues[0]!=undefined">
-      <tr>
-        <th>Address</th>
-        <td>{{venueInfo._embedded.venues[0].address.line1}}</td>
-      </tr>
-      <tr>
-        <th>City</th>
-        <td>{{venueInfo._embedded.venues[0].city.name}}, {{venueInfo._embedded.venues[0].state.name}}</td>
-      </tr>
-      <tr *ngIf="venueInfo._embedded.venues[0].boxOfficeInfo!=undefined && venueInfo._embedded.venues[0].boxOfficeInfo.phoneNumberDetail!=undefined">
-        <th>Phone Number</th>
-        <td>{{venueInfo._embedded.venues[0].boxOfficeInfo.phoneNumberDetail}}</td>
-      </tr>
-      
-      <tr *ngIf="venueInfo._embedded.venues[0].boxOfficeInfo!=undefined && venueInfo._embedded.venues[0].boxOfficeInfo.openHoursDetail!=undefined">
-        <th>Open Hours</th>
-        <td>{{venueInfo._embedded.venues[0].boxOfficeInfo.openHoursDetail}}</td>
-      </tr>
-      <tr *ngIf="venueInfo._embedded.venues[0].boxOfficeInfo!=undefined && venueInfo._embedded.venues[0].generalInfo.generalRule!=undefined">
-        <th>General Rule</th>
-        <td>{{venueInfo._embedded.venues[0].generalInfo.generalRule}}</td>
-      </tr>
-      <tr *ngIf="venueInfo._embedded.venues[0].boxOfficeInfo!=undefined && venueInfo._embedded.venues[0].generalInfo.childRule!=undefined">
-        <th>Child Rule</th>
-        <td>{{venueInfo._embedded.venues[0].generalInfo.childRule}}</td>
-      </tr>
-      
         
-<!--<agm-map [latitude]="lat" [longitude]="lng">
-  
-</agm-map-->
-    </tbody>
-  </table>
-  <div class="container mb-4" *ngIf="vlat!=undefined
-         && vlng!=undefined"><agm-map [zoom]="15" [latitude]="vlat" [longitude]="vlng"><agm-marker [latitude]="vlat" [longitude]="vlng"></agm-marker></agm-map></div>
+    </div> -->
+    <div>
+        <div class="container justify-content-center" *ngIf="detailsInfo._embedded.attractions==undefined">Norecords</div>
+        <div *ngFor="let d of detailsInfo._embedded.attractions;let i=index">
+            <div class="row justify-content-center">
+                <h3>{{d.name}}</h3>
+            </div>
+            <div *ngIf="artistsInfo[i]==undefined || artistsInfo[i].artists==undefined || artistsInfo[i].artists.items==undefined||artistsInfo[i].artists.items.length==0||noSpotify==true">No Records</div>
+            <div *ngIf="artistsInfo[i]!=undefined && artistsInfo[i].artists!=undefined && artistsInfo[i].artists.items.length>0">
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <td>{{artistsInfo[i].artists.items[0].name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Followers</th>
+                        <td [hidden]="artistsInfo[i].artists.items[0].followers==undefined&&artistsInfo[i].artists.items[0].followers.total==undefined">{{artistsInfo[i].artists.items[0].followers.total}}</td>
+                    </tr>
+                    <tr>
+                        <th>Popularity</th>
+                        <td>
+                            <div class="posrel">
+                                <round-progress [current]="artistsInfo[i].artists.items[0].popularity" [max]="100" [radius]="25" [stroke]="5" [clockwise]="false"></round-progress>
+                                <div class="popval">{{artistsInfo[i].artists.items[0].popularity}}</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Check At</th>
+                        <td>
+                            <a href={{artistsInfo[i].artists.items[0].external_urls.spotify}} target="_blank">Spotify</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="container mb-4" [hidden]="!venueselect" id="venue">
+    <table class="table">
+        <tbody *ngIf="venueInfo!=undefined&&venueInfo._embedded!=undefined&&venueInfo._embedded.venues[0]!=undefined">
+            <tr>
+                <th>Address</th>
+                <td>{{venueInfo._embedded.venues[0].address.line1}}</td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>{{venueInfo._embedded.venues[0].city.name}},
+                    {{venueInfo._embedded.venues[0].state.name}}</td>
+            </tr>
+            <tr *ngIf="venueInfo._embedded.venues[0].boxOfficeInfo!=undefined && venueInfo._embedded.venues[0].boxOfficeInfo.phoneNumberDetail!=undefined">
+                <th>Phone Number</th>
+                <td>{{venueInfo._embedded.venues[0].boxOfficeInfo.phoneNumberDetail}}</td>
+            </tr>
+
+            <tr *ngIf="venueInfo._embedded.venues[0].boxOfficeInfo!=undefined && venueInfo._embedded.venues[0].boxOfficeInfo.openHoursDetail!=undefined">
+                <th>Open Hours</th>
+                <td>{{venueInfo._embedded.venues[0].boxOfficeInfo.openHoursDetail}}</td>
+            </tr>
+            <tr *ngIf="venueInfo._embedded.venues[0].boxOfficeInfo!=undefined && venueInfo._embedded.venues[0].generalInfo.generalRule!=undefined">
+                <th>General Rule</th>
+                <td>{{venueInfo._embedded.venues[0].generalInfo.generalRule}}</td>
+            </tr>
+            <tr *ngIf="venueInfo._embedded.venues[0].boxOfficeInfo!=undefined && venueInfo._embedded.venues[0].generalInfo.childRule!=undefined">
+                <th>Child Rule</th>
+                <td>{{venueInfo._embedded.venues[0].generalInfo.childRule}}</td>
+            </tr>
+
+
+            <!--<agm-map [latitude]="lat" [longitude]="lng">
+              
+            </agm-map-->
+        </tbody>
+    </table>
+    <div class="container mb-2" *ngIf="vlat!=undefined
+                     && vlng!=undefined">
+        <agm-map [zoom]="15" [latitude]="vlat" [longitude]="vlng">
+            <agm-marker [latitude]="vlat" [longitude]="vlng"></agm-marker>
+        </agm-map>
+    </div>
 </div>
