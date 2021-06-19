@@ -24,17 +24,18 @@
                     <td>
                         {{i+1}}
                     </td>
-                    <td [hidden]="f.dates==undefined || f.dates.start==undefined ||f.dates.start.localDate==undefined">
-                        {{f.dates.start.localDate}}
+                    <td [hidden]="f==undefined||f.date==undefined">
+                        {{f.date}}
                     </td>
-                    <td [hidden]="f.name==undefined">
-                        <a href="" (click)="displayevent(f.id);evedetaildisplay=true;evedetaildisplay2=false" data-toggle="tooltip" data-placement="top" title="{{f.name}}">{{f.name.substring(0,35)}}</a>
+                    <td [hidden]="f==undefined||f.event==undefined">
+                        <a href="" (click)="displayevent(f.id);evedetaildisplay=true;evedetaildisplay2=false" data-toggle="tooltip" data-placement="top" title="{{f.name}}">{{f.event.substring(0,35)}}</a>
                     </td>
-                    <td [hidden]="f.classifications==undefined">
-                        <span [hidden]="f.classifications[0].genre==undefined || f.classifications[0].genre.name==undefined">{{f.classifications[0].genre.name}}</span><span [hidden]="f.classifications[0].segment==undefined || f.classifications[0].segment.name==undefined">| {{f.classifications[0].segment.name}}</span>
+                    <td [hidden]="f==undefined||f.genre==undefined">
+                        {{f.genre}}
+                        <!-- <span [hidden]="f.classifications[0].genre==undefined || f.classifications[0].genre.name==undefined">{{f.classifications[0].genre.name}}</span><span [hidden]="f.classifications[0].segment==undefined || f.classifications[0].segment.name==undefined">| {{f.classifications[0].segment.name}}</span> -->
                     </td>
-                    <td [hidden]="f.classifications==undefined || f._embedded==undefined ||f._embedded.venues==undefined || f._embedded.venues[0].name==undefined">
-                        {{f._embedded.venues[0].name}}
+                    <td [hidden]="f==undefined||f.venue==undefined">
+                        {{f.venue}}
                     </td>
                     <td>
                         <button class="btn btn-sm default" style="border:none;background:transparent" name={{f.id}} (click)="del_favor(f.id);"><i class="material-icons">delete</i></button>
@@ -46,7 +47,7 @@
         </table>
     </div>
 
-    <div class="alert alert-warning" *ngIf="favorite_details.length==0 && favrecords==false">No favorites</div>
+    <div class="alert alert-warning" *ngIf="favorite_details.length==0||favrecords==false">No favorites</div>
 </div>
 <div class="container ed" id="evedetaildisplay" *ngIf="evedetaildisplay">
     <button class="btn btn-light" (click)="evedetaildisplay=false;"><i class="material-icons">keyboard_arrow_left</i> list</button>

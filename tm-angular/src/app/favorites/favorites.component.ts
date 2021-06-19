@@ -10,10 +10,10 @@ import { trigger, transition, animate, style } from '@angular/animations';
     trigger('slideInOut', [
       transition(':enter', [
         style({transform: 'translateX(-100%)'}),
-        animate('300ms ease-in', style({transform: 'translateX(0%)'}))
+        animate('500ms ease-in', style({transform: 'translateX(0%)'}))
       ]),
       transition(':leave', [
-        animate('300ms ease-in', style({transform: 'translateX(-100%)'}))
+        animate('500ms ease-in', style({transform: 'translateX(-100%)'}))
       ])
     ])
   ]
@@ -31,44 +31,64 @@ export class FavoritesComponent implements OnInit {
 
   ngOnInit(): void {
     this.favorites={ ...localStorage };
+    //this.loadfav();
     this.loadfav();
     this.evedetaildisplay=false;
     this.event='';
+    
   }
   displayevent(id:string){
     console.log(id);
     this.event=id;
   }
-  async loadfav()
-  {
-    if (this.favorites=={}){
+  loadfav(){
+    
+        if (this.favorites==null){
       this.favrecords=false;
     }
     else{
-      
       var i=0;
-    for (var f in this.favorites){
-        await this.getdetails(f,i);
-        i++;
+    for (let f in this.favorites){
+      this.favorite_details[i]=JSON.parse(this.favorites[f]);
+      i++;
     }
+  }
     console.log(this.favorite_details);
     this.favrecords=true;
   }
-  }
+  //  loadfav()
+  // {
+  //   if (this.favorites=={}){
+  //     this.favrecords=false;
+  //   }
+  //   else{
+      
+  //     var i=0;
+  //   for (var f in this.favorites){
+  //        this.getdetails(f,i);
+  //       i++;
+  //   }
+  //   console.log(this.favorite_details);
+  //   this.favrecords=true;
+  // }
+  // }
 
-  async getdetails(id:string,i:number){
-    var paramobj={"id":id};
-    this.http.get('http://localhost:8080/getdetails',
-    {
-      params:paramobj
-    })
-    .subscribe(response=>{
-      this.favorite_details[i]=response;
-    })
+  //  getdetails(id:string,i:number){
+  //   var paramobj={"id":id};
+  //   this.http.get('http://localhost:8080/getdetails',
+  //   {
+  //     params:paramobj
+  //   })
+  //   .subscribe(response=>{
+  //     this.favorite_details[i]=response;
+  //   })
 
     
-  }
+  // }
   del_favor(id:string){
+      if (this.favorite_details==[]){
+        this.favrecords=false;
+      }
       
       for(let i = 0; i < this.favorite_details.length; ++i){
         if (this.favorite_details[i].id == id) {

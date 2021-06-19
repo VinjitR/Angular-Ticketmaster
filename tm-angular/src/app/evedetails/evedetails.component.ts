@@ -10,7 +10,7 @@ import { trigger, transition, animate, style } from '@angular/animations';
   animations: [
     trigger('slideInOut', [
       transition(':enter', [
-        style({transform: 'translateX(-100%)'}),
+        style({transform: 'translateX(100%)'}),
         animate('200ms ease-in', style({transform: 'translateX(0%)'}))
       ]),
       transition(':leave', [
@@ -129,7 +129,7 @@ set_favor(idstr:string){
  
     if(this.detailsInfo.id==idstr){
       console.log(idstr,this.detailsInfo)
-      localStorage.setItem(idstr, JSON.stringify(this.detailsInfo));
+      localStorage.setItem(idstr, JSON.stringify({"date":this.detailsInfo.dates.start.localDate,"event":this.detailsInfo.name,"id":this.detailsInfo.id,"genre":this.detailsInfo.classifications[0].genre.name+" | "+this.detailsInfo.classifications[0].segment.name+" | "+this.detailsInfo.classifications[0].subGenre.name,"venue":this.detailsInfo._embedded.venues[0].name}));
     }
   }
 

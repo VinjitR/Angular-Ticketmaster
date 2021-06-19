@@ -149,13 +149,13 @@
           </form>
       </div>
 
+<div class="container">
+  <div class="row justify-content-center">
 
-  <div class="row mx-auto">
-    <div class="col-md-auto mx-auto">
       <button class="btn btn-primary" [ngClass]="{'btn-default': !clicked, 'btn-primary': clicked}"(click)="redis=true; favdis=false;clicked = !clicked">Results</button>
       <button class="btn btn-default" [ngClass]="{'btn-default': clicked, 'btn-primary': !clicked}"(click)="redis=false;favdis=true;clicked = !clicked">Favourites</button>
-    </div>
   </div>
+</div>
 <div *ngIf="submitted">
 <div class="container-flex" *ngIf="redis">
   <div id="display" *ngIf="display">

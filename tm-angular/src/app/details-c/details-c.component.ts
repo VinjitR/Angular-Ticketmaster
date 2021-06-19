@@ -43,7 +43,7 @@ export class DetailsCComponent implements OnInit {
     for (var i of this.eventD.events){
       if(i.id==idstr){
         console.log(idstr,i)
-        localStorage.setItem(idstr, JSON.stringify(i));
+        localStorage.setItem(idstr, JSON.stringify({"date":i.datetime,"event":i.event,"id":i.id,"genre":i.genre,"venue":i.venue}));
       }
     }}
 

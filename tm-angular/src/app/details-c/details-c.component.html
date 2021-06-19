@@ -3,7 +3,7 @@
 <div class="container table-responsive" *ngIf="!evedetaildisplay" [@slideInOut]>
     <div class="container">
     <div class="row justify-content-end">
-    <button class="btn btn-light" (click)="evedetaildisplay=true;" [disabled]="evedetaildisplay2">Details <i class="material-icons">keyboard_arrow_right</i></button>
+    <button class="btn btn-md btn-light" (click)="evedetaildisplay=true;" [disabled]="evedetaildisplay2">Details <i class="material-icons" >keyboard_arrow_right</i></button>
 </div>
 </div>
 
@@ -77,7 +77,7 @@
 
 </div>
 <div class="container ed" id="evedetaildisplay" *ngIf="evedetaildisplay">
-    <button class="btn btn-light" (click)="evedetaildisplay=false;"><i class="material-icons">keyboard_arrow_left</i> list</button>
+    <button class="btn btn-md btn-light" (click)="evedetaildisplay=false;"><i class="material-icons">keyboard_arrow_left</i> list</button>
     <app-evedetails [eventdetailsid]="event" ></app-evedetails>
 </div>
 
