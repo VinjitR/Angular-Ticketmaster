@@ -1,5 +1,5 @@
 import { Component, OnInit ,Injectable} from '@angular/core';
-import { NgForm,  FormsModule,FormBuilder,FormGroup } from '@angular/forms';
+import { Validators,FormBuilder,FormGroup, AbstractControl } from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
 import { Observable,of } from 'rxjs';
 import {map, startWith,switchMap,filter, debounce, debounceTime} from 'rxjs/operators';
@@ -42,9 +42,11 @@ export class AppComponent implements OnInit{
   redis:boolean;
   favdis:boolean;
   ticketForm:FormGroup;
-  isDisabled:boolean;
+  isDisabled:boolean=true;
   errorinfo:boolean=false;
   clicked:boolean=true;
+  progress:boolean=true;
+  formvalidcheck:boolean=false;
 
 
   filteredOptions: Observable<any> | any;
@@ -53,14 +55,14 @@ export class AppComponent implements OnInit{
 
 
   constructor(private http:HttpClient,public fb:FormBuilder,private service:Service) { 
-    this.isDisabled=true;
+
     this.ticketForm=this.fb.group({
-      keyword:[''],
+      keyword:['',[Validators.required, this.noWhitespaceValidator]],
       category:['All'],
       distance:[''],
       units:['miles'],
       location: ['curloc'],
-      location2:[{value: '', disabled: this.isDisabled}]});
+      location2:[{value: '', disabled: this.isDisabled},[Validators.required]]});
     
     this.submitted=false;
     this.display=false;
@@ -73,13 +75,15 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void{
+
     this.ticketForm=this.fb.group({
-      keyword:[''],
+      keyword:['',[Validators.required, this.noWhitespaceValidator]],
       category:['All'],
       distance:[''],
       units:['miles'],
       location: ['curloc'],
-      location2:[{value: '', disabled: this.isDisabled}]});
+      location2:[{value: '', disabled: this.isDisabled},[Validators.required]]});
+      this.ticketForm.controls.location2.disable();
 
     this.details="";
 
@@ -101,6 +105,15 @@ export class AppComponent implements OnInit{
     );
       
   }
+
+  public noWhitespaceValidator(control: AbstractControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
+}
+
+
+
   private _filter(value: string) {
     const filterValue = value.toLowerCase();
     // if (value.length == 0 ){
@@ -139,7 +152,9 @@ export class AppComponent implements OnInit{
 
 
   onSubmit(){
+    console.log(this.ticketForm.valid)
     if (this.ticketForm.valid){
+      this.formvalidcheck=false;
       if (this.ticketForm.value.distance==''){
         this.ticketForm.value.distance='10';
       }
@@ -157,9 +172,8 @@ export class AppComponent implements OnInit{
                   //   return new Date(a.dates.start.localDate) - new Date(b.dates.start.localDate);
                   // })
                   console.log(data);
-                  this.details = data;
-                  this.submitted=true;
-                  
+                  this.details=data;
+                  this.progress=false;
                   if (this. details.events!=undefined &&this.details.events.length!=0 ){
                     this.display=true;
                       this.nodisplay=false;
@@ -181,6 +195,9 @@ export class AppComponent implements OnInit{
               );
       
     }
+    else{
+      this.formvalidcheck=true
+    }
   }
 
   // changeDisabled(){
@@ -200,6 +217,8 @@ export class AppComponent implements OnInit{
     this.submitted=false;
     this.ngOnInit();
     this.errorinfo=false;
+    this.formvalidcheck=false;
+
 
 
 

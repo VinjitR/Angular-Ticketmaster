@@ -1,4 +1,4 @@
-<div class="container-flex">
+
 
 
   <!-- <form class="container bg-light"#ticketForm="ngForm" (ngSubmit)="onSubmit(ticketForm)">
@@ -74,27 +74,36 @@
       </div>
   </form>
 </div> -->
-<div class="container bg-light">
+<div class="container bg-light justify-content-center">
   <h2 class="text-center"><br>Entertainment Event Ticket Search</h2><br>
-  <form [formGroup]="ticketForm" class="needs-validation" (ngSubmit)="onSubmit()" novalidate>
-      <div class="form-group row justify-content-left required">
+  <div class="row">
+      <div class="container">
+  <form class="container-flex " [formGroup]="ticketForm" (ngSubmit)="onSubmit()" >
+      <div class="form-group row justify-content-left">
           <label for="keyword" class="control-label col-sm-2 offset-sm-2">Keyword</label>
           <div class="col-sm-6">
               <input  type="text" name="keyword" class="form-control" placeholder="Enter Artist, Team or Event Name (eg. Lakers)" id="Keyword"
-              matInput formControlName="keyword" [matAutocomplete]="auto" required/>
-              <!-- <div *ngIf="ticketForm.keyword.invalid && (ticketForm.keyword.dirty || ticketForm. keyword.touched)" class="alert">
-                  <span style="color:red">Please enter a keyword</span>
-              </div> -->
+              matInput formControlName="keyword" [matAutocomplete]="auto" [ngClass]="{ 'is-invalid': (ticketForm.controls.keyword.invalid &&(ticketForm.controls.keyword.dirty )) || (formvalidcheck) }"/>
               <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptions | async " [value]="option.name">
                     {{option.name}}
                   </mat-option>
               </mat-autocomplete>
               <div class="invalid-feedback">
-               Please Enter a keyword.
+                  Please enter a keyword
               </div>
+
           </div>
       </div>
+      <!--error checks-->
+      <!-- <div *ngIf="ticketForm.invalid || ticketForm.hasError('whitespace')"class="invalid-feedback">
+        Please Enter a keyword.
+      </div> -->
+                   <!-- <div *ngIf="(ticketForm.controls.keyword.invalid && (ticketForm.controls.keyword.dirty || ticketForm.controls.keyword.touched)) && (ticketForm.valid==false)" class="invalid-feedback">
+                <div *ngIf="ticketForm.controls.keyword.errors">
+                Please Enter a keyword
+              </div>
+            </div> -->
 
       <div class="form-group row justify-content-left">
           <label for="Category" class="control-label col-sm-2 offset-sm-2">Category</label>
@@ -122,7 +131,7 @@
               </select>
           </div>
       </div>
-      <div class="form-group row justify-content-left required">
+      <div class="form-group row justify-content-left">
           <label for="current_location" class="control-label col-sm-2 offset-sm-2">From</label>
           <div class="col-sm-6">
               <input formControlName="location" type="radio" name="location" id="current_location" value="curloc" (change)="ticketForm.controls.location2.disable();"checked>
@@ -132,7 +141,10 @@
               
               <label  for="other_location"> Others, Please specify:</label>
               <div class="col-md-30">
-                  <input type="text" formControlName="location2" class="form-control" placeholder="Enter a location" id="location2" name="location2"/>
+                  <input type="text" formControlName="location2" class="form-control" placeholder="Enter a location" id="location2" name="location2" [ngClass]="{ 'is-invalid': (((ticketForm.controls.location2.invalid || ticketForm.controls.location2.dirty) &&(formvalidcheck)) && ticketForm.controls.location.value=='othloc')}"/>
+                  <div class="invalid-feedback">
+                    Please enter a location
+                </div>
               </div>
           </div>
       </div>
@@ -147,14 +159,25 @@
           </div>
       </div>
           </form>
+        </div>
+    </div>
       </div>
 
+<div class="row">
 <div class="container">
   <div class="row justify-content-center">
 
       <button class="btn btn-primary" [ngClass]="{'btn-default': !clicked, 'btn-primary': clicked}"(click)="redis=true; favdis=false;clicked = !clicked">Results</button>
       <button class="btn btn-default" [ngClass]="{'btn-default': clicked, 'btn-primary': !clicked}"(click)="redis=false;favdis=true;clicked = !clicked">Favourites</button>
   </div>
+</div>
+</div>
+
+
+<div class="container mt-2" *ngIf="submitted&&progress">
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
 </div>
 <div *ngIf="submitted">
 <div class="container-flex" *ngIf="redis">
