@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit ,Output,EventEmitter} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { trigger, transition, animate, style } from '@angular/animations';
@@ -15,16 +15,16 @@ import { environment } from 'src/environments/environment';
         animate('500ms ease-in', style({transform: 'translateX(0%)'}))
       ]),
       transition(':leave', [
-        style({transform: 'translateX(100%)'}),
-        animate('500ms ease-out', style({transform: 'translateX(0%)'}))
+        animate('500ms ease-out', style({transform: 'translateX(-100%)'}))
       ])
     ])
   ]
 })
 export class EvedetailsComponent implements OnInit {
 @Input() eventdetailsid:any;
+@Output() checkdisplay:EventEmitter<boolean> = new EventEmitter();
 
-
+displaycheck:boolean=true;
 infoselect: boolean=true;
 artistselect: boolean = false;
 venueselect: boolean = false;
@@ -145,6 +145,11 @@ checkfavor(idstr:string): string | undefined{
     return undefined;
   }
 
+}
+
+tabledisplay(){
+  this.displaycheck=false;
+  this.checkdisplay.emit(this.displaycheck);
 }
 
 }

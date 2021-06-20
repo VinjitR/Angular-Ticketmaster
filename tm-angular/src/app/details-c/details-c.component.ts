@@ -8,10 +8,10 @@ import { trigger, transition, animate, style } from '@angular/animations';
     trigger('slideInOut', [
       transition(':enter', [
         style({transform: 'translateX(100%)'}),
-        animate('200ms ease-out', style({transform: 'translateX(0%)'}))
+        animate('300ms ease-in', style({transform: 'translateX(0%)'}))
       ]),
       transition(':leave', [
-        animate('100ms ease-out', style({transform: 'translateX(100%)'}))
+        animate('300ms ease-in', style({transform: 'translateX(100%)'}))
       ])
     ])
   ]
@@ -21,6 +21,7 @@ export class DetailsCComponent implements OnInit {
 
   evedetaildisplay:boolean=false;
   evedetaildisplay2:boolean=true;
+  slideactivate:boolean=false;
 
   event:any;
 
@@ -57,5 +58,34 @@ export class DetailsCComponent implements OnInit {
       return undefined;
     }
 
+  }
+
+  getbetterName(name:string){
+    if(name.length>34){
+    var space_index=0;
+    if(name.charAt(35)==" "){
+      return name.substring(0,31)+"...";
+    }
+    else{
+    for(let i=0;i<name.length;i++){
+      if (name.charAt(i)==' '){
+          if(i>35){
+            break;
+          }
+          else{
+            space_index=i;
+          }
+      }
+    }
+    return name.substring(0,space_index)+"...";
+  }
+    }
+    else{
+      return name;
+    }
+  }
+  checkdisplayHandler(displaybool:boolean){
+    this.evedetaildisplay=displaybool;
+    this.slideactivate=true;
   }
 }

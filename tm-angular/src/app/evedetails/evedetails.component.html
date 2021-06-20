@@ -1,5 +1,9 @@
 <div class="container mb-4" [@slideInOut]>
-    <div class="row justify-content-end">
+    <div class="row justify-content-between">
+        <div class="col-2">
+        <button class="btn btn-light align-items-center" (click)="tabledisplay()"><i class="material-icons align-middle" >chevron_left</i>list</button>
+    </div>
+    <div class="col-2">
         <a class="twitter-share-button" href="{{tweeturl}}" target="_blank">
             <img src="https://csci571.com/hw/hw8/images/Twitter.png" height="45" width="45"></a>
             <button class="btn btn-light ml-3" style="border: 1px;" (click)="set_favor(detailsInfo.id)">
@@ -9,10 +13,12 @@
                 <div *ngIf="checkfavor(detailsInfo.id)!=detailsInfo.id">
                     <i class="material-icons">star_border</i>
                 </div>
-                
+            
         
             </button>
+        </div>
     </div>
+
     <div class="row justify-content-center" *ngIf="detailsInfo!=undefined&&detailsInfo.name!=undefined">
         <h2>{{detailsInfo.name}}</h2>
     </div>

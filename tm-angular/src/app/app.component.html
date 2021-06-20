@@ -14,7 +14,6 @@
                     </div>
           </div>
       </div>
-
       <div class="form-group row justify-content-left">
           <label for="Category" class="control-label col-sm-2 offset-sm-2">Category</label>
           <div class="col-sm-2">
@@ -28,7 +27,6 @@
               </select>
           </div>
       </div>
-
       <div class="form-group row justify-content-left">
           <label for="Distance" class="control-label col-sm-2 offset-sm-2">Distance</label>
           <div class="col-sm-2">
@@ -49,7 +47,6 @@
                   Current Location</label>
               <br>
               <input #loc="ngModel" type="radio" name="location" id="other_location" value="othloc" [(ngModel)]="location"/>
-
               <label for="other_location">
                   Others, Please specify:</label>
               <div class="col-md-30">
@@ -60,8 +57,6 @@
               </div>
           </div>
       </div>
-
-
       <div class="form-group row">
           <div class="control-label offset-sm-2 mb-4">
               <button type="submit" class="btn btn-primary"
@@ -75,133 +70,132 @@
   </form>
 </div> -->
 <div class="container bg-light justify-content-center">
-  <h2 class="text-center"><br>Entertainment Event Ticket Search</h2><br>
-  <div class="row">
-      <div class="container">
-  <form class="container-flex " [formGroup]="ticketForm" (ngSubmit)="onSubmit()" >
-      <div class="form-group row justify-content-left required align-middle">
-          <label for="keyword" class="control-label col-sm-2 offset-sm-2 ">Keyword</label>
-          <div class="col-sm-6">
-              <input  type="text" name="keyword" class="form-control " placeholder="Enter Artist, Team or Event Name (eg. Lakers)" id="Keyword"
-              matInput formControlName="keyword" [matAutocomplete]="auto" [ngClass]="{ 'is-invalid': (ticketForm.controls.keyword.invalid &&(ticketForm.controls.keyword.dirty )) || (formvalidcheck) }"/>
-              <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let option of filteredOptions | async " [value]="option.name">
-                    {{option.name}}
-                  </mat-option>
-              </mat-autocomplete>
-              <div class="invalid-feedback">
-                  Please enter a keyword
-              </div>
-
-          </div>
-      </div>
-      <!--error checks-->
-      <!-- <div *ngIf="ticketForm.invalid || ticketForm.hasError('whitespace')"class="invalid-feedback">
-        Please Enter a keyword.
-      </div> -->
-                   <!-- <div *ngIf="(ticketForm.controls.keyword.invalid && (ticketForm.controls.keyword.dirty || ticketForm.controls.keyword.touched)) && (ticketForm.valid==false)" class="invalid-feedback">
-                <div *ngIf="ticketForm.controls.keyword.errors">
-                Please Enter a keyword
-              </div>
-            </div> -->
-
-      <div class="form-group row justify-content-left align-middle">
-          <label for="Category" class="control-label col-sm-2 offset-sm-2">Category</label>
-          <div class="col-sm-2">
-              <select name="Category" class="form-control" id="Category" formControlName="category">
-                  <option value="All" selected>All</option>
-                  <option value="KZFzniwnSyZfZ7v7nJ">Music</option>
-                  <option value="KZFzniwnSyZfZ7v7nE">Sports</option>
-                  <option value="KZFzniwnSyZfZ7v7na">Arts & Theatre</option>
-                  <option value="KZFzniwnSyZfZ7v7nn">Film</option>
-                  <option value="KZFzniwnSyZfZ7v7nl">Miscellaneous</option>
-              </select>
-          </div>
-      </div>
-
-      <div class="form-group row justify-content-left align-middle">
-          <label for="Distance" class="control-label col-sm-2 offset-sm-2">Distance</label>
-          <div class="col-sm-2">
-              <input formControlName="distance" type="text" class="form-control" id="Distance" placeholder="10" name="distance">
-          </div>
-          <div class="col-sm-2">
-              <select formControlName="units"class="form-control" name="units">
-                  <option value="miles" selected>Miles</option>
-                  <option value="kilometers">Kilometers</option>
-              </select>
-          </div>
-      </div>
-      <div class="form-group row justify-content-left required align-middle">
-          <label for="current_location" class="control-label col-sm-2 offset-sm-2">From</label>
-          <div class="col-sm-6">
-              <input formControlName="location" type="radio" name="location" id="current_location" value="curloc" (change)="ticketForm.controls.location2.disable();"checked>
-              <label  for="current_location"> Current Location</label>
-              <br>
-              <input #othradio formControlName="location" type="radio" name="location" id="other_location" value="othloc" (change)="ticketForm.controls.location2.enable();" >
-              
-              <label  for="other_location"> Others, Please specify:</label>
-              <div class="col-md-30">
-                  <input type="text" formControlName="location2" class="form-control" placeholder="Enter a location" id="location2" name="location2" [ngClass]="{ 'is-invalid': (((ticketForm.controls.location2.invalid || ticketForm.controls.location2.dirty) &&(formvalidcheck)) && ticketForm.controls.location.value=='othloc')}"/>
-                  <div class="invalid-feedback">
-                    Please enter a location
+    <h2 class="text-center"><br>Entertainment Event Ticket Search</h2><br>
+    <div class="row">
+        <div class="container">
+    <form class="container-flex " [formGroup]="ticketForm" (ngSubmit)="onSubmit()" >
+        <div class="form-group row justify-content-left required align-middle">
+            <label for="keyword" class="control-label col-sm-2 offset-sm-2 ">Keyword</label>
+            <div class="col-sm-6">
+                <input  type="text" name="keyword" class="form-control " placeholder="Enter Artist, Team or Event Name (eg. Lakers)" id="Keyword"
+                matInput formControlName="keyword" [matAutocomplete]="auto" [ngClass]="{ 'is-invalid': (ticketForm.controls.keyword.invalid &&(ticketForm.controls.keyword.dirty )) || (formvalidcheck) }"/>
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredOptions | async " [value]="option.name">
+                      {{option.name}}
+                    </mat-option>
+                </mat-autocomplete>
+                <div class="invalid-feedback">
+                    Please enter a keyword
                 </div>
-              </div>
-          </div>
-      </div>
-
-
-      <div class="form-group row ">
-          <div class="control-label col-sm-4 offset-sm-2">
-              <button type="submit" class="btn btn-primary mx-2" [disabled]="this.iploc==''">
-                  <i class="material-icons align-middle" >search</i><span>Search</span></button>
-                  <button type="button" class="btn btn-default mx-4" (click)="onReset()">
-                  <i class="material-icons align-middle">clear_all</i>Clear</button>
-          </div>
-      </div>
-          </form>
+  
+            </div>
         </div>
-    </div>
+        <!--error checks-->
+        <!-- <div *ngIf="ticketForm.invalid || ticketForm.hasError('whitespace')"class="invalid-feedback">
+          Please Enter a keyword.
+        </div> -->
+                     <!-- <div *ngIf="(ticketForm.controls.keyword.invalid && (ticketForm.controls.keyword.dirty || ticketForm.controls.keyword.touched)) && (ticketForm.valid==false)" class="invalid-feedback">
+                  <div *ngIf="ticketForm.controls.keyword.errors">
+                  Please Enter a keyword
+                </div>
+              </div> -->
+  
+        <div class="form-group row justify-content-left align-middle">
+            <label for="Category" class="control-label col-sm-2 offset-sm-2">Category</label>
+            <div class="col-sm-2">
+                <select name="Category" class="form-control" id="Category" formControlName="category">
+                    <option value="All" selected>All</option>
+                    <option value="KZFzniwnSyZfZ7v7nJ">Music</option>
+                    <option value="KZFzniwnSyZfZ7v7nE">Sports</option>
+                    <option value="KZFzniwnSyZfZ7v7na">Arts & Theatre</option>
+                    <option value="KZFzniwnSyZfZ7v7nn">Film</option>
+                    <option value="KZFzniwnSyZfZ7v7nl">Miscellaneous</option>
+                </select>
+            </div>
+        </div>
+  
+        <div class="form-group row justify-content-left align-middle">
+            <label for="Distance" class="control-label col-sm-2 offset-sm-2">Distance</label>
+            <div class="col-sm-2">
+                <input formControlName="distance" type="text" class="form-control" id="Distance" placeholder="10" name="distance">
+            </div>
+            <div class="col-sm-2">
+                <select formControlName="units"class="form-control" name="units">
+                    <option value="miles" selected>Miles</option>
+                    <option value="kilometers">Kilometers</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row justify-content-left required align-middle">
+            <label for="current_location" class="control-label col-sm-2 offset-sm-2">From</label>
+            <div class="col-sm-6">
+                <input formControlName="location" type="radio" name="location" id="current_location" value="curloc" (change)="ticketForm.controls.location2.disable();"checked>
+                <label  for="current_location"> Current Location</label>
+                <br>
+                <input #othradio formControlName="location" type="radio" name="location" id="other_location" value="othloc" (change)="ticketForm.controls.location2.enable();" >
+                
+                <label  for="other_location"> Others, Please specify:</label>
+                <div class="col-md-30">
+                    <input type="text" formControlName="location2" class="form-control" placeholder="Enter a location" id="location2" name="location2" [ngClass]="{ 'is-invalid': (((ticketForm.controls.location2.invalid || ticketForm.controls.location2.dirty) &&(formvalidcheck)) && ticketForm.controls.location.value=='othloc')}"/>
+                    <div class="invalid-feedback">
+                      Please enter a location
+                  </div>
+                </div>
+            </div>
+        </div>
+  
+  
+        <div class="form-group row mb-4">
+            <div class="control-label col-sm-4 offset-sm-2">
+                <button type="submit" class="btn btn-primary mx-2" [disabled]="this.iploc==''">
+                    <i class="material-icons align-middle" >search</i><span>Search</span></button>
+                    <button type="button" class="btn btn-default mx-4" (click)="onReset()">
+                    <i class="material-icons align-middle">clear_all</i>Clear</button>
+            </div>
+        </div>
+            </form>
+          </div>
       </div>
-
-<div class="container pb-20">
-<div class="container mt-3">
-  <div class="row justify-content-center">
-    <ul class="nav nav-tabs nav-pills" style="border-bottom:0px;">
-        <li class="nav-item">
-          <a class="nav-link active" data-toggle="tab"
-            (click)="redis=true; favdis=false;" style="border: none;" [style.color]="redis?'white':'blue'">Results</a>
-        </li>
-        <li  class="nav-item">
-          <a class="nav-link" data-toggle="tab"
-            (click)="redis=false;favdis=true;" style="border: none;" [style.color]="favdis?'white':'blue'" >Favourites</a>
-        </li>
-      </ul>
-
-      <!-- <button class="btn btn-primary" [ngClass]="{'btn-link text-decoration-none': !clicked, 'btn-primary': clicked}"(click)="redis=true; favdis=false;clicked = !clicked">Results</button>
-      <button class="btn btn-default" [ngClass]="{'btn-link text-decoration-none': clicked, 'btn-primary': !clicked}"(click)="redis=false;favdis=true;clicked = !clicked">Favourites</button> -->
+        </div>
+  
+  <div class="container pb-20">
+  <div class="container mt-3">
+    <div class="row justify-content-center">
+      <ul class="nav nav-pills" style="border-bottom:0px;">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab"
+              (click)="redis=true; favdis=false;" style="border: none;" [style.color]="redis?'white':'blue'">Results</a>
+          </li>
+          <li  class="nav-item">
+            <a class="nav-link" data-toggle="tab"
+              (click)="redis=false;favdis=true;" style="border: none;" [style.color]="favdis?'white':'blue'" >Favourites</a>
+          </li>
+        </ul>
+  
+        <!-- <button class="btn btn-primary" [ngClass]="{'btn-link text-decoration-none': !clicked, 'btn-primary': clicked}"(click)="redis=true; favdis=false;clicked = !clicked">Results</button>
+        <button class="btn btn-default" [ngClass]="{'btn-link text-decoration-none': clicked, 'btn-primary': !clicked}"(click)="redis=false;favdis=true;clicked = !clicked">Favourites</button> -->
+    </div>
   </div>
-</div>
-
-
-
-<div class="container mt-5 mb-5" *ngIf="submitted&&progress">
-    <div class="progress">
-        <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+  
+  
+  
+  <div class="container mt-5 mb-5" *ngIf="submitted&&progress">
+      <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+  </div>
+  <div *ngIf="submitted">
+  <div class="container-flex" *ngIf="redis && details!=''">
+    <div id="display" *ngIf="display && details!=''">
+  
+        <app-details-c [eventD]="details"></app-details-c>
       </div>
-</div>
-<div *ngIf="submitted">
-<div class="container-flex" *ngIf="redis">
-  <div id="display" *ngIf="display">
-
-      <app-details-c [eventD]="details"></app-details-c>
-    </div>
-  <div class="container alert alert-warning justify-content-center mt-5"id="no-display" *ngIf="nodisplay">No records</div>
-</div>
-<div class="container pb-6" *ngIf="!redis">
-  <app-favorites></app-favorites>
-</div>
-
-</div>
-<div class="container mt-5 alert alert-danger justify-content-center" *ngIf="errorinfo && redis">Failed to fetch results</div>
-</div>
-
+    <div class="container alert alert-warning justify-content-center mt-5"id="no-display" *ngIf="nodisplay">No records</div>
+  </div>
+  <div class="container pb-6" *ngIf="!redis">
+    <app-favorites></app-favorites>
+  </div>
+  
+  </div>
+  <div class="container mt-5 alert alert-danger justify-content-center" *ngIf="errorinfo && redis">Failed to fetch results</div>
+  </div>

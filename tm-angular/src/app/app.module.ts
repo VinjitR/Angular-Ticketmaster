@@ -6,6 +6,7 @@ import {RoundProgressModule} from 'angular-svg-round-progressbar';
 import { AgmCoreModule } from '@agm/core';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -34,7 +35,8 @@ import { FavoritesComponent } from './favorites/favorites.component';
     }),
     BrowserAnimationsModule,
     MatAutocompleteModule,
-    MatInputModule
+    MatInputModule,
+    MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent]
