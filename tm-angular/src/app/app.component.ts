@@ -2,7 +2,8 @@ import { Component, OnInit ,Injectable} from '@angular/core';
 import { Validators,FormBuilder,FormGroup, AbstractControl } from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
 import { Observable,of } from 'rxjs';
-import {map, startWith,switchMap,filter, debounce, debounceTime} from 'rxjs/operators';
+import {map, startWith,switchMap,filter } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class Service {
   opts:any = [];
 
   getData(value:string) {
-        this.http.get("http://localhost:8080/auto_complete",{
+        this.http.get(environment.apiUrl+"/auto_complete",{
       params:{"keyword":value}
     })
     .subscribe(response=>{this.opts=response;});
@@ -120,7 +121,7 @@ export class AppComponent implements OnInit{
     //   return [];
     // }
     // else {
-      return this.http.get("http://localhost:8080/auto_complete",{
+      return this.http.get(environment.apiUrl+"/auto_complete",{
         params:{"keyword":value}
       }).pipe(
         filter(data => !!data),
@@ -163,7 +164,7 @@ export class AppComponent implements OnInit{
           this.ticketForm.value.location2=this.iploc.loc;
         }
         console.log(this.ticketForm.value)
-        this.http.get("http://localhost:8080/getticket",
+        this.http.get(environment.apiUrl+"/getticket",
         {
           params:this.ticketForm.value
         }).subscribe(
@@ -191,6 +192,7 @@ export class AppComponent implements OnInit{
                   
                   console.log(this.details);},
                 err => {console.log(err);
+                  this.progress=false;
                   this.errorinfo=true;}
               );
       

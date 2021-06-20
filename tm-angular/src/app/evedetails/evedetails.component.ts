@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { trigger, transition, animate, style } from '@angular/animations';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-evedetails',
@@ -51,7 +52,7 @@ vlng:any;
   }
   async loadeventdetails(){
     var paramobj={"id":this.eventdetailsid};
-    this.http.get('http://localhost:8080/getdetails',
+    this.http.get(environment.apiUrl+"/getdetails",
     {
       params:paramobj
     }).subscribe(resposnse=>{
@@ -81,7 +82,7 @@ vlng:any;
 async loadSptDet(i:number, name:any){
   console.log(i,name);
   var paramobj={"Keyword":name};
-    await this.http.get('http://localhost:8080/spotify',
+    await this.http.get(environment.apiUrl+"/spotify",
     {
       params:paramobj
     }).subscribe(response=>{
@@ -109,7 +110,7 @@ async loadSptDet(i:number, name:any){
 async loadvenue(key:string){
   console.log(key);
   var paramobj={"key":key.replace(/ /g,'+')};
-   this.http.get('http://localhost:8080/getvenue',
+   this.http.get(environment.apiUrl+"/getvenue",
   {
     params:paramobj
   }).subscribe(response=>{

@@ -1,4 +1,4 @@
-<div class="container" [@slideInOut]>
+<div class="container mb-4" [@slideInOut]>
     <div class="row justify-content-end">
         <a class="twitter-share-button" href="{{tweeturl}}" target="_blank">
             <img src="https://csci571.com/hw/hw8/images/Twitter.png" height="45" width="45"></a>
@@ -95,7 +95,7 @@
                                           <a ng-show="detailsInfo.seatmap.staticUrl!=undefined" href="{{detailsInfo.seatmap.staticUrl}}" target="_blank"><img ng-show="detailsInfo.seatmap.staticUrl!=undefined" src="{{detailsInfo.seatmap.staticUrl}}" height="350" width="450"></a>
                                   </div>
                                   <div class="modal-footer">
-                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                      <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                                   </div>
                               </div>
                           </div>
@@ -107,7 +107,7 @@
 
 </div>
 <div
-    class="container" [hidden]="!artistselect" id="a&t">
+    class="container mb-4" [hidden]="!artistselect" id="a&t">
     <!-- <div  *ngIf="noSpotify==true">No Records</div>
       <div  *ngIf="noSpotify==false">
       <table class="table">
@@ -134,12 +134,12 @@
         
     </div> -->
     <div>
-        <div class="alert alert-warning justify-content-center mt-5" *ngIf="detailsInfo._embedded.attractions==undefined">No Records</div>
+        <div class="alert alert-warning justify-content-center mt-5" *ngIf="detailsInfo._embedded.attractions==undefined">No records</div>
         <div *ngFor="let d of detailsInfo._embedded.attractions;let i=index">
             <div class="row justify-content-center">
                 <h3>{{d.name}}</h3>
             </div>
-            <div class="alert alert-warning justify-content-center mt-5" *ngIf="artistsInfo[i]==undefined || artistsInfo[i].artists==undefined || artistsInfo[i].artists.items==undefined||artistsInfo[i].artists.items.length==0||noSpotify==true">No Records</div>
+            <div class="alert alert-warning justify-content-center mt-5" *ngIf="artistsInfo[i]==undefined || artistsInfo[i].artists==undefined || artistsInfo[i].artists.items==undefined||artistsInfo[i].artists.items.length==0||noSpotify==true">No records</div>
             <div *ngIf="artistsInfo[i]!=undefined && artistsInfo[i].artists!=undefined && artistsInfo[i].artists.items.length>0">
                 <table class="table">
                     <tr>
