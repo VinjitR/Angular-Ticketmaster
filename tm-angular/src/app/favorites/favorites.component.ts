@@ -122,6 +122,9 @@ export class FavoritesComponent implements OnInit {
       return name;
     }
   }
+  checkdisplayHandler(displaybool:boolean){
+    this.evedetaildisplay=displaybool;
+  }
 
 
 }
