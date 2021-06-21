@@ -28,7 +28,7 @@
                         {{f.date}}
                     </td>
                     <td [hidden]="f==undefined||f.event==undefined">
-                        <a href="" (click)="displayevent(f.id);evedetaildisplay=true;evedetaildisplay2=false" data-toggle="tooltip" data-placement="top" title="{{f.event}}">{{f.event.substring(0,35)}}</a>
+                        <a href="" (click)="displayevent(f.id);evedetaildisplay=true;evedetaildisplay2=false" matTooltip="{{f.event}}">{{getbetterName(f.event)}}</a>
                     </td>
                     <td [hidden]="f==undefined||f.genre==undefined">
                         {{f.genre}}

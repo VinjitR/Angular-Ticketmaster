@@ -1,84 +1,86 @@
 <!-- <p>{{eventD.page.totalElements}}</p> -->
 
-<div class="container table-responsive" *ngIf="!evedetaildisplay" [@.disabled]="!slideactivate"[@slideInOut]="slideactivate? ':enter' : ''" >
+<div class="container table-responsive" *ngIf="!evedetaildisplay" [@.disabled]="!slideactivate" [@slideInOut]="slideactivate? ':enter' : ''">
     <div class="container">
-    <div class="row justify-content-end">
-    <button class="btn btn-light text-center align-items-center" (click)="evedetaildisplay=true;" [disabled]="evedetaildisplay2">Details<i class="material-icons align-middle">chevron_right</i></button>
-</div>
-</div>
+        <div class="row justify-content-end">
+            <button class="btn btn-light text-center align-items-center" (click)="evedetaildisplay=true;" [disabled]="evedetaildisplay2">Details<i class="material-icons align-middle">chevron_right</i>
+            </button>
+        </div>
+    </div>
 
     <table class="table">
-    <thead class="thead-light ">
-      <tr class="border border-dark-1">
-        <th scope="col">#</th>
-        <th scope="col">Date</th>
-        <th scope="col">Event</th>
-        <th scope="col">Category</th>
-        <th scope="col">Venue Info</th>
-        <th scope="col">Favourites</th>
-      </tr>
-    </thead>
-    <!-- <tbody>
-        <tr *ngFor="let event of eventD._embedded.events;let i=index">
-            <th>{{i+1}}</th>
-            <td>{{event.dates.start.localDate}}</td>
-            <td *ngIf="event!=undefined"><a href="" (click)="displayevent(event.id);evedetaildisplay=true;evedetaildisplay2=false">{{event.name.substring(0,35)}}</a></td>
-            <td>
-                <div  *ngFor="let cat of event.classifications">
-                    <div class="row" *ngIf="cat.primary==true ">
-                    <div *ngIf="(cat.genre.name!='Undefined') && (cat.genre!=undefined) &&(cat.genre.name!=undefined) ">{{cat.genre.name}} | </div>
-                    <div *ngIf="(cat.segment.name!='Undefined') && (cat.segment!=undefined)&&(cat.segment.name!=undefined);else nodata">{{cat.segment.name}} | </div>
-                    <div *ngIf="(cat.subGenre.name!='Undefined') && (cat.subGenre!=undefined)&&(cat.subGenre.name!=undefined);else nodata"> {{cat.subGenre.name}} </div>
-                    <div *ngIf="(cat.subType!=undefined)&&(cat.subType.name!='Undefined')&&(cat.subType.name!=undefined);else nodata"> | {{cat.subType.name}}</div>
-                    <div *ngIf="(cat.type!=undefined) && (cat.type.name!='Undefined')&&(cat.type.name!=undefined);else nodata"> | {{cat.type.name}}</div>
-                    <ng-template #nodata>
-                        <div>No data</div>
-                      </ng-template>
-                    </div>
-                    
-                </div>
-
+        <thead class="thead-light ">
+            <tr class="border border-dark-1">
+                <th scope="col">#</th>
+                <th scope="col">Date</th>
+                <th scope="col">Event</th>
+                <th scope="col">Category</th>
+                <th scope="col">Venue Info</th>
+                <th scope="col">Favourites</th>
+            </tr>
+        </thead>
+        <!-- <tbody>
+                <tr *ngFor="let event of eventD._embedded.events;let i=index">
+                    <th>{{i+1}}</th>
+                    <td>{{event.dates.start.localDate}}</td>
+                    <td *ngIf="event!=undefined"><a href="" (click)="displayevent(event.id);evedetaildisplay=true;evedetaildisplay2=false">{{event.name.substring(0,35)}}</a></td>
+                    <td>
+                        <div  *ngFor="let cat of event.classifications">
+                            <div class="row" *ngIf="cat.primary==true ">
+                            <div *ngIf="(cat.genre.name!='Undefined') && (cat.genre!=undefined) &&(cat.genre.name!=undefined) ">{{cat.genre.name}} | </div>
+                            <div *ngIf="(cat.segment.name!='Undefined') && (cat.segment!=undefined)&&(cat.segment.name!=undefined);else nodata">{{cat.segment.name}} | </div>
+                            <div *ngIf="(cat.subGenre.name!='Undefined') && (cat.subGenre!=undefined)&&(cat.subGenre.name!=undefined);else nodata"> {{cat.subGenre.name}} </div>
+                            <div *ngIf="(cat.subType!=undefined)&&(cat.subType.name!='Undefined')&&(cat.subType.name!=undefined);else nodata"> | {{cat.subType.name}}</div>
+                            <div *ngIf="(cat.type!=undefined) && (cat.type.name!='Undefined')&&(cat.type.name!=undefined);else nodata"> | {{cat.type.name}}</div>
+                            <ng-template #nodata>
+                                <div>No data</div>
+                              </ng-template>
+                            </div>
+                            
+                        </div>
+        
+                    </td>
+                    <td >
+                        <div *ngIf="(event!=undefined && event._embedded!=undefined && event._embedded.venues[0]!=undefined &&event._embedded.venues[0].name!=undefined) ; else novenue">{{event._embedded.venues[0].name}}</div>
+                        <ng-template #novenue><div>No Venue</div></ng-template>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm default" name={{event.id}}>Favourite</button>
+                    </td>
+                </tr>
+            </tbody> -->
+        <tr *ngFor="let event of eventD.events; let i=index;">
+            <th>
+                {{i+1}}
+            </th>
+            <td>{{event.datetime}}</td>
+            <td *ngIf="event!=undefined">
+                <a href="" (click)="displayevent(event.id);evedetaildisplay=true;evedetaildisplay2=false" matTooltip="{{event.event}}">{{getbetterName(event.event)}}</a>
             </td>
-            <td >
-                <div *ngIf="(event!=undefined && event._embedded!=undefined && event._embedded.venues[0]!=undefined &&event._embedded.venues[0].name!=undefined) ; else novenue">{{event._embedded.venues[0].name}}</div>
-                <ng-template #novenue><div>No Venue</div></ng-template>
-            </td>
-            <td>
-                <button class="btn btn-sm default" name={{event.id}}>Favourite</button>
-            </td>
-        </tr>
-    </tbody> -->
-    <tr *ngFor="let event of eventD.events; let i=index;">
-        <th>
-            {{i+1}}
-        </th>
-        <td>{{event.datetime}}</td>
-            <td *ngIf="event!=undefined"><a href="" (click)="displayevent(event.id);evedetaildisplay=true;evedetaildisplay2=false" matTooltip="{{event.event}}">{{getbetterName(event.event)}}</a></td>
             <td>
                 {{event.genre}}
             </td>
-            <td >
+            <td>
                 {{event.venue}}
             </td>
             <td>
                 <button class="btn btn-sm" style="border:none;background:transparent" name={{event.id}} (click)="set_favor(event.id)">
                     <div *ngIf="checkfavor(event.id)==event.id">
-                    <i id="yellow" class="material-icons" >star</i>
+                        <i id="yellow" class="material-icons">star</i>
                     </div>
                     <div *ngIf="checkfavor(event.id)!=event.id">
                         <i class="material-icons">star_border</i>
                     </div>
-                    
-            
+
+
                 </button>
             </td>
-    </tr>
-</table>
+        </tr>
+    </table>
 
 </div>
-<div class="container ed " id="evedetaildisplay" *ngIf="evedetaildisplay">
+<div
+    class="container ed " id="evedetaildisplay" *ngIf="evedetaildisplay">
     <!-- <button class="btn btn-light align-items-center" (click)="evedetaildisplay=false"><i class="material-icons align-middle" >chevron_left</i>list</button> -->
     <app-evedetails [eventdetailsid]="event" (checkdisplay)="checkdisplayHandler($event)"></app-evedetails>
 </div>
-
-

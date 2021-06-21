@@ -7,3 +7,8 @@ select.form-control {
      -webkit-appearance: none;
      appearance: none;
   }
+
+.container{
+
+    padding-bottom: 2%;
+}

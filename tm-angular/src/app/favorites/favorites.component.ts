@@ -97,4 +97,31 @@ export class FavoritesComponent implements OnInit {
         }
     }
   }
+
+  getbetterName(name:string){
+    if(name.length>34){
+    var space_index=0;
+    if(name.charAt(35)==" "){
+      return name.substring(0,31)+"...";
+    }
+    else{
+    for(let i=0;i<name.length;i++){
+      if (name.charAt(i)==' '){
+          if(i>35){
+            break;
+          }
+          else{
+            space_index=i;
+          }
+      }
+    }
+    return name.substring(0,space_index)+"...";
+  }
+    }
+    else{
+      return name;
+    }
+  }
+
+
 }

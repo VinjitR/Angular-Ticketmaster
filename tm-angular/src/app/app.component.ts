@@ -174,7 +174,7 @@ export class AppComponent implements OnInit{
                   // })
                   console.log(data);
                   this.details=data;
-                  this.progress=false;
+                  
                   if (this. details.events!=undefined &&this.details.events.length!=0 ){
                     this.display=true;
                       this.nodisplay=false;
@@ -188,7 +188,7 @@ export class AppComponent implements OnInit{
                       this.display=false;
                       
                     }
-                    
+                    this.progress=false;
                   
                   console.log(this.details);},
                 err => {console.log(err);
