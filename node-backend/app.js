@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 app.get('/getticket', function(req, res) {
   //  var keyword=req.query.keyword;
   
-  //http://localhost:8080/getticket?keyword=pop&category=All&distance=10&location=9qh1w
+  //http://localhost:8080/getticket?keyword=pop&category=All&distance=10&location=othloc&location2=Ny
   //http://localhost:8080/auto_complete?keyword=Suns
   //http://localhost:8080/getdetails?id=vv1AaZAqUGkdLRJxS
 
