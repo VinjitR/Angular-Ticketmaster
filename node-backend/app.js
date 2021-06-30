@@ -74,6 +74,7 @@ app.get('/getticket', function(req, res) {
     console.log(ticketurl);
     axios.get(ticketurl)
     .then(async (response) => {
+     // console.log(response.data);
      let data = await getevents(response.data);
      console.log(data);
      res.send(data);
@@ -134,12 +135,13 @@ app.get('/getticket', function(req, res) {
 
       cat = cat.substring(0, cat.length-3);
       //console.log(cat)
-
+      //console.log(ticketinfo[i]["_embedded"]["venues"][0]["location"]["longitude"])
       event_data['events'].push({'datetime' : ticketinfo[i]['dates']['start']['localDate'],
                                    'event' : ticketinfo[i]['name'],
                                    'id':ticketinfo[i]['id'],
                                    'genre' : cat,
-                                   'venue': ticketinfo[i]['_embedded']['venues'][0]['name']})
+                                   'venue': ticketinfo[i]['_embedded']['venues'][0]['name'],
+                                  'latlng':ticketinfo[i]["_embedded"]["venues"][0]["location"]["latitude"]+","+ticketinfo[i]["_embedded"]["venues"][0]["location"]["longitude"]})
 
     }
     event_data['events'].sort(function(a,b){                  //Sort in ascending order according to dates
@@ -147,7 +149,7 @@ app.get('/getticket', function(req, res) {
       // to get a value that is either negative, positive, or zero.
       return new Date(a.datetime) - new Date(b.datetime);
     });
-    // console.log(event_data)
+     //console.log(event_data)
     return event_data; 
   }
   
